@@ -28,6 +28,7 @@
                 ['route' => 'admin.programs.index', 'label' => 'Program & Pelatihan', 'icon' => '🎓'],
                 ['route' => 'admin.categories.index', 'label' => 'Kategori', 'icon' => '🏷️'],
                 ['route' => 'admin.settings.edit', 'label' => 'Pengaturan Situs', 'icon' => '⚙️'],
+                ['route' => 'admin.complaints.index', 'label' => 'Pengaduan Masyarakat', 'icon' => '📢'],
             ];
             @endphp
             @foreach ($menu as $item)

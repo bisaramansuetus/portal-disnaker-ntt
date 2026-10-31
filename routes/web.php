@@ -15,11 +15,18 @@ use App\Http\Controllers\Site\PostController as SitePostController;
 use App\Http\Controllers\Site\ProgramController as SiteProgramController;
 use App\Http\Controllers\Site\SitemapController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Site\ComplaintController as SiteComplaintController;
 
 // ============ PUBLIC ============
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/profil-dinas', [PageController::class, 'profile'])->name('site.profile');
 Route::get('/kontak', [ContactController::class, 'index'])->name('site.contact');
+
+Route::get('/pengaduan', [SiteComplaintController::class, 'create'])->name('site.complaints.create');
+Route::post('/pengaduan', [SiteComplaintController::class, 'store'])->name('site.complaints.store');
+Route::get('/pengaduan/lacak', [SiteComplaintController::class, 'track'])->name('site.complaints.track');
+Route::post('/pengaduan/lacak', [SiteComplaintController::class, 'trackResult'])->name('site.complaints.trackResult');
+
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::get('/berita', [SitePostController::class, 'index'])->name('site.posts.index');
@@ -58,5 +65,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Pengaturan Situs
         Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+
+        // Rute Pengaduan Admin
+        Route::resource('complaints', \App\Http\Controllers\Admin\ComplaintController::class)->only(['index', 'show']);
+        Route::put('complaints/{complaint}/status', [\App\Http\Controllers\Admin\ComplaintController::class, 'updateStatus'])->name('complaints.updateStatus');
+        Route::post('complaints/{complaint}/response', [\App\Http\Controllers\Admin\ComplaintController::class, 'storeResponse'])->name('complaints.storeResponse');
     });
 });

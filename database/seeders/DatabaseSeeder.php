@@ -9,6 +9,8 @@ class DatabaseSeeder extends Seeder {
             CategorySeeder::class,
             SiteSettingSeeder::class,
             PageSeeder::class,
+            ContentSeeder::class,
+            ComplaintCategorySeeder::class,
         ]);
     }
 }

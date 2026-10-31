@@ -64,6 +64,7 @@
                         ['route' => 'site.jobs.index', 'label' => 'Lowongan'],
                         ['route' => 'site.programs.index', 'label' => 'Program'],
                         ['route' => 'site.transmigrasi.index', 'label' => 'Transmigrasi'],
+                        ['route' => 'site.complaints.create', 'label' => 'Pengaduan'],
                         ['route' => 'site.contact', 'label' => 'Kontak'],
                     ];
                 @endphp
@@ -78,6 +79,7 @@
         <nav id="mobileNav" class="hidden md:hidden pb-3 space-y-1 text-sm">
             @foreach ($navItems as $item)
                 <a href="{{ route($item['route']) }}" class="block px-3 py-2 rounded hover:bg-slate-700">{{ $item['label'] }}</a>
+                <li><a href="{{ route('site.complaints.track') }}" class="hover:text-white">Lacak Pengaduan</a></li>
             @endforeach
         </nav>
     </div>
