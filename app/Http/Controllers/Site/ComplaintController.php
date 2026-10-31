@@ -76,4 +76,22 @@ class ComplaintController extends Controller
 
         return view('site.complaints.result', compact('complaint'));
     }
+
+    public function submitRating(Request $request, Complaint $complaint)
+    {
+        // Hanya bisa memberi rating jika statusnya sudah 'selesai'
+        if ($complaint->status !== 'selesai') {
+            return back()->withErrors(['rating' => 'Rating hanya bisa diberikan jika laporan sudah selesai.']);
+        }
+
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5'
+        ]);
+
+        $complaint->update(['rating' => $request->rating]);
+
+        return redirect()->route('site.complaints.trackResult', ['ticket_number' => $complaint->ticket_number])
+            ->with('success_msg', 'Terima kasih! Penilaian Anda sangat berharga bagi kami.')
+            ->withInput(['ticket_number' => $complaint->ticket_number]);
+    }
 }

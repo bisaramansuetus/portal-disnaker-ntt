@@ -6,6 +6,9 @@
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-slate-800">Kirim Pengaduan</h1>
             <p class="text-gray-600 mt-2">Sampaikan laporan Anda terkait pelayanan atau masalah ketenagakerjaan. Identitas Anda dilindungi.</p>
+            <a href="{{ route('site.complaints.track') }}" class="inline-block bg-blue-100 text-blue-800 font-semibold px-4 py-2 rounded-lg hover:bg-blue-200 transition text-sm">
+                🔍 Sudah punya Nomor Tiket? Lacak Pengaduan
+            </a>
         </div>
 
         <form method="POST" action="{{ route('site.complaints.store') }}" enctype="multipart/form-data" class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">

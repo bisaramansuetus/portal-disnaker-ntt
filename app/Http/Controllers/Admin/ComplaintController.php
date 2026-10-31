@@ -6,6 +6,8 @@ use App\Models\Complaint;
 use App\Models\ComplaintResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\ComplaintReplied;
+use Illuminate\Support\Facades\Mail;
 
 class ComplaintController extends Controller
 {
@@ -40,17 +42,24 @@ class ComplaintController extends Controller
 
     public function storeResponse(Request $request, Complaint $complaint)
     {
-        $request->validate(['response' => 'required|string']);
-        
-        ComplaintResponse::create([
+        $response = ComplaintResponse::create([
             'complaint_id' => $complaint->id,
             'user_id' => Auth::id(),
             'response' => $request->response
         ]);
 
-        // Opsional: Jika status masih pending, otomatis ubah ke proses saat dibalas
         if ($complaint->status === 'pending') {
             $complaint->update(['status' => 'proses']);
+        }
+
+        // KIRIM EMAIL KE PELAPOR (jika email diisi)
+        if ($complaint->email) {
+            try {
+                Mail::to($complaint->email)->send(new ComplaintReplied($complaint, $response));
+            } catch (\Exception $e) {
+                // Jika email gagal terkirim, jangan gagalkan proses penyimpanan tanggapan
+                // (Anda bisa mencatat log error di sini jika perlu)
+            }
         }
 
         return back()->with('success', 'Tanggapan berhasil dikirim.');

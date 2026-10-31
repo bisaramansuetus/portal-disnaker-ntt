@@ -67,5 +67,39 @@
                 </div>
             </div>
         </div>
+
+    {{-- BLOK RATING KEPUASAN --}}
+    @if($complaint->status == 'selesai')
+        <div class="mt-8 border-t pt-6">
+            <h4 class="font-bold text-lg text-slate-800 mb-2">Penilaian Kinerja Petugas</h4>
+            
+            @if($complaint->rating)
+                <div class="bg-green-50 border border-green-200 p-4 rounded-lg flex items-center gap-4">
+                    <p class="text-sm text-green-800 font-medium">Anda telah memberikan rating:</p>
+                    <div class="flex gap-1 text-yellow-400 text-2xl">
+                        @for($i=1; $i<=5; $i++)
+                            {{ $i <= $complaint->rating ? '★' : '☆' }}
+                        @endfor
+                    </div>
+                </div>
+            @else
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <p class="text-sm text-gray-700 mb-3">Seberapa puas Anda dengan penanganan laporan ini?</p>
+                    <form method="POST" action="{{ route('site.complaints.submitRating', $complaint) }}" class="flex gap-2">
+                        @csrf
+                        <select name="rating" required class="border rounded px-3 py-2 text-sm">
+                            <option value="">— Pilih Bintang —</option>
+                            <option value="5">★★★★★ (Sangat Puas)</option>
+                            <option value="4">★★★★☆ (Puas)</option>
+                            <option value="3">★★★☆☆ (Cukup)</option>
+                            <option value="2">★★☆☆☆ (Kurang)</option>
+                            <option value="1">★☆☆☆☆ (Sangat Kurang)</option>
+                        </select>
+                        <button class="bg-yellow-500 text-white font-bold px-4 py-2 rounded hover:bg-yellow-600 text-sm">Kirim Rating</button>
+                    </form>
+                </div>
+            @endif
+        </div>
+    @endif
     </div>
 @endsection

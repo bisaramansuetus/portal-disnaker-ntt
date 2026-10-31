@@ -26,6 +26,7 @@ Route::get('/pengaduan', [SiteComplaintController::class, 'create'])->name('site
 Route::post('/pengaduan', [SiteComplaintController::class, 'store'])->name('site.complaints.store');
 Route::get('/pengaduan/lacak', [SiteComplaintController::class, 'track'])->name('site.complaints.track');
 Route::post('/pengaduan/lacak', [SiteComplaintController::class, 'trackResult'])->name('site.complaints.trackResult');
+Route::post('/pengaduan/rating/{complaint}', [SiteComplaintController::class, 'submitRating'])->name('site.complaints.submitRating');
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
