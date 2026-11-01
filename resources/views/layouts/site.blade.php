@@ -54,28 +54,30 @@
                 </div>
             </a>
             <button id="navToggle" class="md:hidden text-2xl leading-none">☰</button>
-            <nav class="hidden md:flex items-center gap-1 text-sm">
-                @php
-                    $navItems = [
-                        ['route' => 'home', 'label' => 'Beranda'],
-                        ['route' => 'site.profile', 'label' => 'Profil Dinas'],
-                        ['route' => 'site.posts.index', 'label' => 'Berita'],
-                        ['route' => 'site.announcements.index', 'label' => 'Pengumuman'],
-                        ['route' => 'site.jobs.index', 'label' => 'Lowongan'],
-                        ['route' => 'site.programs.index', 'label' => 'Program'],
-                        ['route' => 'site.transmigrasi.index', 'label' => 'Transmigrasi'],
-                        ['route' => 'site.complaints.create', 'label' => 'Pengaduan'],
-                        ['route' => 'site.contact', 'label' => 'Kontak'],
-                    ];
-                @endphp
-                @foreach ($navItems as $item)
-                    <a href="{{ route($item['route']) }}"
-                       class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs($item['route']) || request()->routeIs(str_replace('.index', '.*', $item['route'])) ? 'bg-slate-700' : '' }}">
-                        {{ $item['label'] }}
-                    </a>
-                @endforeach
-                {{-- Tambahan menu Lacak untuk Desktop --}}
-                <a href="{{ route('site.complaints.track') }}" class="px-3 py-2 rounded text-yellow-300 hover:bg-slate-700 hover:text-white transition font-semibold">
+                        {{-- MENU DESKTOP --}}
+            <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+                <a href="{{ route('home') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('home') ? 'bg-slate-700' : '' }}">Beranda</a>
+                <a href="{{ route('site.profile') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.profile') ? 'bg-slate-700' : '' }}">Profil Dinas</a>
+
+                                {{-- DROPDOWN DESKTOP (Click to Toggle) --}}
+                <div class="relative" id="dropdownInformasiContainer">
+                    <button type="button" id="dropdownInformasiButton" class="px-3 py-2 rounded hover:bg-slate-700 flex items-center gap-1 focus:outline-none">
+                        Informasi <span class="text-xs transition-transform duration-200" id="dropdownArrow">▼</span>
+                    </button>
+                    {{-- Dropdown Menu (Awalnya hidden) --}}
+                    <div id="dropdownInformasiMenu" class="hidden absolute left-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-slate-800 z-50 border border-gray-100">
+                        <a href="{{ route('site.posts.index') }}" class="block px-4 py-2 hover:bg-slate-100 transition">Berita</a>
+                        <a href="{{ route('site.announcements.index') }}" class="block px-4 py-2 hover:bg-slate-100 transition">Pengumuman</a>
+                        <a href="{{ route('site.jobs.index') }}" class="block px-4 py-2 hover:bg-slate-100 transition">Lowongan</a>
+                        <a href="{{ route('site.transmigrasi.index') }}" class="block px-4 py-2 hover:bg-slate-100 transition">Transmigrasi</a>
+                    </div>
+                </div>
+
+                <a href="{{ route('site.programs.index') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.programs.*') ? 'bg-slate-700' : '' }}">Program</a>
+                <a href="{{ route('site.complaints.create') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.complaints.create') ? 'bg-slate-700' : '' }}">Pengaduan</a>
+                <a href="{{ route('site.contact') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.contact') ? 'bg-slate-700' : '' }}">Kontak</a>
+                
+                <a href="{{ route('site.complaints.track') }}" class="ml-2 px-3 py-2 rounded text-yellow-300 hover:bg-slate-700 hover:text-white transition font-semibold border border-yellow-500/30">
                     Lacak Pengaduan
                 </a>
             </nav>
@@ -83,23 +85,33 @@
 
         {{-- MENU MOBILE (HAMBURGER) --}}
         <nav id="mobileNav" class="hidden md:hidden pb-3 space-y-1 text-sm border-t border-slate-700 mt-2 pt-2">
-            @foreach ($navItems as $item)
-                <a href="{{ route($item['route']) }}" class="block px-3 py-2 rounded hover:bg-slate-700">{{ $item['label'] }}</a>
-            @endforeach
+            <a href="{{ route('home') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Beranda</a>
+            <a href="{{ route('site.profile') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Profil Dinas</a>
+
+            {{-- ACCORDION MOBILE (Menggunakan tag details/summary bawaan HTML) --}}
+            <details class="group">
+                <summary class="cursor-pointer list-none flex justify-between items-center px-3 py-2 rounded hover:bg-slate-700 select-none">
+                    <span>Informasi</span>
+                    <span class="text-xs transition-transform group-open:rotate-180">▼</span>
+                </summary>
+                <div class="pl-4 pb-2 space-y-1 text-slate-300">
+                    <a href="{{ route('site.posts.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Berita</a>
+                    <a href="{{ route('site.announcements.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Pengumuman</a>
+                    <a href="{{ route('site.jobs.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Lowongan</a>
+                    <a href="{{ route('site.transmigrasi.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Transmigrasi</a>
+                </div>
+            </details>
+
+            <a href="{{ route('site.programs.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Program</a>
+            <a href="{{ route('site.complaints.create') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Pengaduan</a>
+            <a href="{{ route('site.contact') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Kontak</a>
             
-            {{-- Tambahan menu Lacak untuk Mobile (Diletakkan di LUAR perulangan) --}}
-            <a href="{{ route('site.complaints.track') }}" class="block px-3 py-2 rounded text-yellow-300 hover:bg-slate-700 hover:text-white transition font-semibold">
-                🔍 Lacak Pengaduan
-            </a>
+            <div class="pt-2 mt-2 border-t border-slate-700">
+                <a href="{{ route('site.complaints.track') }}" class="block px-3 py-2 rounded bg-slate-700 text-yellow-300 font-semibold text-center hover:bg-slate-600 transition">
+                    🔍 Lacak Pengaduan
+                </a>
+            </div>
         </nav>
-        </div>
-        <nav id="mobileNav" class="hidden md:hidden pb-3 space-y-1 text-sm">
-            @foreach ($navItems as $item)
-                <a href="{{ route($item['route']) }}" class="block px-3 py-2 rounded hover:bg-slate-700">{{ $item['label'] }}</a>
-                <li><a href="{{ route('site.complaints.track') }}" class="hover:text-white">Lacak Pengaduan</a></li>
-            @endforeach
-        </nav>
-    </div>
 </header>
 
 <main class="flex-1">
@@ -137,6 +149,30 @@
 <script>
     document.getElementById('navToggle')?.addEventListener('click', () => {
         document.getElementById('mobileNav')?.classList.toggle('hidden');
+    });
+
+        // Script untuk Dropdown Desktop
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropBtn = document.getElementById('dropdownInformasiButton');
+        const dropMenu = document.getElementById('dropdownInformasiMenu');
+        const dropArrow = document.getElementById('dropdownArrow');
+
+        if (dropBtn && dropMenu) {
+            // Buka/Tutup saat tombol diklik
+            dropBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                dropMenu.classList.toggle('hidden');
+                dropArrow.classList.toggle('rotate-180');
+            });
+
+            // Tutup menu saat klik di luar area dropdown
+            document.addEventListener('click', function(e) {
+                if (!dropBtn.contains(e.target) && !dropMenu.contains(e.target)) {
+                    dropMenu.classList.add('hidden');
+                    dropArrow.classList.remove('rotate-180');
+                }
+            });
+        }
     });
 </script>
 @stack('scripts')
