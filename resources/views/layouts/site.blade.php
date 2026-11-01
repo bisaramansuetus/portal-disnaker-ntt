@@ -74,7 +74,24 @@
                         {{ $item['label'] }}
                     </a>
                 @endforeach
+                {{-- Tambahan menu Lacak untuk Desktop --}}
+                <a href="{{ route('site.complaints.track') }}" class="px-3 py-2 rounded text-yellow-300 hover:bg-slate-700 hover:text-white transition font-semibold">
+                    Lacak Pengaduan
+                </a>
             </nav>
+        </div>
+
+        {{-- MENU MOBILE (HAMBURGER) --}}
+        <nav id="mobileNav" class="hidden md:hidden pb-3 space-y-1 text-sm border-t border-slate-700 mt-2 pt-2">
+            @foreach ($navItems as $item)
+                <a href="{{ route($item['route']) }}" class="block px-3 py-2 rounded hover:bg-slate-700">{{ $item['label'] }}</a>
+            @endforeach
+            
+            {{-- Tambahan menu Lacak untuk Mobile (Diletakkan di LUAR perulangan) --}}
+            <a href="{{ route('site.complaints.track') }}" class="block px-3 py-2 rounded text-yellow-300 hover:bg-slate-700 hover:text-white transition font-semibold">
+                🔍 Lacak Pengaduan
+            </a>
+        </nav>
         </div>
         <nav id="mobileNav" class="hidden md:hidden pb-3 space-y-1 text-sm">
             @foreach ($navItems as $item)
