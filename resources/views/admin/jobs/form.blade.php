@@ -82,15 +82,46 @@
 
 @push('scripts')
 <script>
-    tinymce.init({ 
-        selector: '#description, #requirements', 
-        height: 300, 
+    tinymce.init({
+        selector: '#content',
+        height: 500,
         menubar: false,
-        plugins: 'lists link table code preview', 
-        // TAMBAHKAN ALIGN DI SINI
-        toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | link table | code preview',
-        branding: false, 
-        promotion: false 
+        plugins: 'lists link image table code preview fullscreen',
+        toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | link image table | code preview fullscreen',
+        branding: false,
+        promotion: false,
+        convert_urls: false,
+        
+        // FITUR TAB YANG AMAN (Tanpa merusak toolbar)
+                setup: function (editor) {
+            editor.on('keydown', function (e) {
+                // Dapatkan elemen blok (paragraf/heading) tempat kursor berada
+                var block = editor.dom.getParent(editor.selection.getNode(), 'p,h1,h2,h3,h4,h5,h6');
+
+                if (e.keyCode === 9) { // Jika tombol TAB ditekan
+                    e.preventDefault(); // Cegah pindah menu
+                    if (block) {
+                        if (e.shiftKey) {
+                            editor.dom.setStyle(block, 'text-indent', ''); // Shift+Tab = Mundur
+                        } else {
+                            editor.dom.setStyle(block, 'text-indent', '2em'); // Tab = Maju
+                        }
+                    }
+                } 
+                else if (e.keyCode === 8 && block) { // Jika tombol BACKSPACE ditekan
+                    var rng = editor.selection.getRng();
+                    
+                    // Cek apakah kursor berada tepat di awal teks (offset 0) dan tidak sedang menyeleksi teks
+                    if (rng.startOffset === 0 && rng.collapsed) {
+                        // Jika paragraf ini memiliki gaya text-indent, hapus indentasinya
+                        if (editor.dom.getStyle(block, 'text-indent')) {
+                            e.preventDefault(); // Cegah paragraf terhapus
+                            editor.dom.setStyle(block, 'text-indent', ''); // Kembalikan ke rata kiri
+                        }
+                    }
+                }
+            });
+        }
     });
 </script>
 @endpush
