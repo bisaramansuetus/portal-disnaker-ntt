@@ -167,12 +167,12 @@
         </div>
     </div>
     <div class="border-t border-red-900/50 text-center py-4 text-xs text-gray-400">
-        © {{ date('Y') }} {{ \App\Models\SiteSetting::get('site_name', 'Disnaker NTT') }}. Hak cipta dilindungi.
+        © {{ date('Y') }} Tim Kuliah Praktek CodeX. Hak cipta dilindungi.
     </div>
 </footer>
 
 <script>
-    // Toggle Mobile Nav
+    // Toggle Mobile Nav {{ \App\Models\SiteSetting::get('site_name', 'Disnaker NTT') }}
     document.getElementById('navToggle')?.addEventListener('click', () => {
         document.getElementById('mobileNav')?.classList.toggle('hidden');
     });

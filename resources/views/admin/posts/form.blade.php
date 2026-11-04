@@ -103,7 +103,7 @@
         convert_urls: false,
         
         // FITUR TAB YANG AMAN (Tanpa merusak toolbar)
-                setup: function (editor) {
+            setup: function (editor) {
             editor.on('keydown', function (e) {
                 // Dapatkan elemen blok (paragraf/heading) tempat kursor berada
                 var block = editor.dom.getParent(editor.selection.getNode(), 'p,h1,h2,h3,h4,h5,h6');

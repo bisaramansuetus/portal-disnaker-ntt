@@ -17,10 +17,24 @@
 
     {{-- SIDEBAR --}}
     <aside id="adminSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-800 text-slate-100 flex-shrink-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
-        <div class="p-4 border-b border-slate-700">
-            <h1 class="font-bold text-lg">Disnaker NTT</h1>
-            <p class="text-xs text-slate-400">Panel Admin</p>
+        
+        {{-- 1. HEADER SIDEBAR (LOGO & JUDUL DI ATAS) --}}
+        <div class="p-4 border-b border-slate-700 flex items-center gap-3">
+            @php $logo = \App\Models\SiteSetting::get('logo_path'); @endphp
+            <div class="w-10 h-10 bg-white rounded flex items-center justify-center p-0.5 shrink-0 shadow-sm">
+                @if ($logo)
+                    <img src="{{ asset('storage/' . $logo) }}" alt="Logo" class="w-full h-full object-contain">
+                @else
+                    <span class="text-[8px] text-slate-400 text-center leading-tight">Logo</span>
+                @endif
+            </div>
+            <div class="flex flex-col leading-tight">
+                <h1 class="font-bold text-sm text-white">Disnaker NTT</h1>
+                <p class="text-[11px] text-slate-400">Panel Admin</p>
+            </div>
         </div>
+
+        {{-- 2. MENU NAVIGASI --}}
         <nav class="p-2 space-y-1 text-sm flex-1 overflow-y-auto">
             @php
                 $menu = [
@@ -40,6 +54,8 @@
                 </a>
             @endforeach
         </nav>
+
+        {{-- 3. FOOTER SIDEBAR (LIHAT WEBSITE) --}}
         <div class="p-4 border-t border-slate-700">
             <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-2 text-sm text-slate-300 hover:text-white">
                 <span>🔗</span><span>Lihat Website</span>
@@ -50,7 +66,6 @@
     {{-- MAIN CONTENT --}}
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
         <header class="bg-white border-b px-4 py-3 flex items-center justify-between sticky top-0 z-30">
-            {{-- Tombol Hamburger (Khusus HP) --}}
             <button id="adminNavToggle" class="md:hidden text-slate-800 text-2xl font-bold focus:outline-none">
                 ☰
             </button>
@@ -97,8 +112,10 @@
         }
     }
 
-    toggleBtn.addEventListener('click', toggleSidebar);
-    overlay.addEventListener('click', toggleSidebar);
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+    }
 </script>
 
 @stack('scripts')
