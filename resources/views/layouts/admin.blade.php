@@ -45,6 +45,8 @@
                     ['route' => 'admin.complaints.index', 'label' => 'Pengaduan Masyarakat', 'icon' => '📢'],
                     ['route' => 'admin.categories.index', 'label' => 'Kategori', 'icon' => '🏷️'],
                     ['route' => 'admin.settings.edit', 'label' => 'Pengaturan Situs', 'icon' => '⚙️'],
+                    ['route' => 'admin.ppid.index', 'label' => 'Dokumen PPID', 'icon' => '📂'],
+                    ['route' => 'admin.ppid.requests.index', 'label' => 'Permohonan PPID', 'icon' => '📝'],
                 ];
             @endphp
             @foreach ($menu as $item)

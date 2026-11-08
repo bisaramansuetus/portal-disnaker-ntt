@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder {
             PageSeeder::class,
             ContentSeeder::class,
             ComplaintCategorySeeder::class,
+            PpidPageSeeder::class, // Tambahkan ini
         ]);
     }
 }

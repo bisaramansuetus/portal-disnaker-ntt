@@ -72,6 +72,20 @@
                 <a href="{{ route('home') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('home') ? 'bg-slate-700' : '' }}">Beranda</a>
                 <a href="{{ route('site.profile') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.profile') ? 'bg-slate-700' : '' }}">Profil Dinas</a>
 
+                {{-- DROPDOWN PPID DESKTOP --}}
+                <div class="relative" id="dropdownPpidContainer">
+                    <button type="button" id="dropdownPpidButton" class="px-3 py-2 rounded hover:bg-slate-700 flex items-center gap-1 focus:outline-none">
+                        PPID <span class="text-xs transition-transform duration-200" id="dropdownPpidArrow">▼</span>
+                    </button>
+                    <div id="dropdownPpidMenu" class="hidden absolute left-0 top-full mt-2 w-56 bg-white rounded-md shadow-lg py-1 text-slate-800 z-50 border border-gray-100">
+                        <a href="{{ route('site.ppid.profile') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Profil PPID</a>
+                        <a href="{{ route('site.ppid.documents') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Informasi Publik</a>
+                        <a href="{{ route('site.ppid.standards') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Standar Layanan & Regulasi</a>
+                        <a href="{{ route('site.ppid.request_permohonan') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Formulir Permohonan</a>
+                        <a href="{{ route('site.ppid.track') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Lacak Layanan PPID</a>
+                    </div>
+                </div>
+
                 {{-- DROPDOWN DESKTOP --}}
                 <div class="relative" id="dropdownInformasiContainer">
                     <button type="button" id="dropdownInformasiButton" class="px-3 py-2 rounded hover:bg-slate-700 flex items-center gap-1 focus:outline-none">
@@ -99,6 +113,20 @@
         <nav id="mobileNav" class="hidden md:hidden pb-3 space-y-1 text-sm border-t border-slate-700 mt-2 pt-2">
             <a href="{{ route('home') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Beranda</a>
             <a href="{{ route('site.profile') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Profil Dinas</a>
+
+            <details class="group">
+                <summary class="cursor-pointer list-none flex justify-between items-center px-3 py-2 rounded hover:bg-slate-700 select-none">
+                    <span>PPID</span>
+                    <span class="text-xs transition-transform group-open:rotate-180 text-slate-300">▼</span>
+                </summary>
+                <div class="pl-4 pb-2 space-y-1 text-slate-300 bg-slate-700/50 rounded mt-1">
+                    <a href="{{ route('site.ppid.profile') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Profil PPID</a>
+                    <a href="{{ route('site.ppid.documents') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Informasi Publik</a>
+                    <a href="{{ route('site.ppid.standards') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Standar Layanan</a>
+                    <a href="{{ route('site.ppid.request_permohonan') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Formulir Permohonan</a>
+                    <a href="{{ route('site.ppid.track') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Lacak Layanan PPID</a>
+                </div>
+            </details>
 
             <details class="group">
                 <summary class="cursor-pointer list-none flex justify-between items-center px-3 py-2 rounded hover:bg-slate-700 select-none">
@@ -196,6 +224,25 @@
             });
         }
     });
+
+    // Dropdown PPID
+    const ppidBtn = document.getElementById('dropdownPpidButton');
+    const ppidMenu = document.getElementById('dropdownPpidMenu');
+    const ppidArrow = document.getElementById('dropdownPpidArrow');
+    if (ppidBtn && ppidMenu) {
+        ppidBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            ppidMenu.classList.toggle('hidden');
+            ppidArrow.classList.toggle('rotate-180');
+        });
+        document.addEventListener('click', function(e) {
+            if (!ppidBtn.contains(e.target) && !ppidMenu.contains(e.target)) {
+                ppidMenu.classList.add('hidden');
+                ppidArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+            
 </script>
 @stack('scripts')
 </body>

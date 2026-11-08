@@ -16,6 +16,10 @@ use App\Http\Controllers\Site\ProgramController as SiteProgramController;
 use App\Http\Controllers\Site\SitemapController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\ComplaintController as SiteComplaintController;
+use App\Http\Controllers\Site\PpidController;
+use App\Http\Controllers\Admin\PpidDocumentController;
+use App\Http\Controllers\Site\PpidRequestController;
+use App\Http\Controllers\Admin\PpidRequestController as AdminPpidRequestController;
 
 // ============ PUBLIC ============
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -27,6 +31,14 @@ Route::post('/pengaduan', [SiteComplaintController::class, 'store'])->name('site
 Route::get('/pengaduan/lacak', [SiteComplaintController::class, 'track'])->name('site.complaints.track');
 Route::post('/pengaduan/lacak', [SiteComplaintController::class, 'trackResult'])->name('site.complaints.trackResult');
 Route::post('/pengaduan/rating/{complaint}', [SiteComplaintController::class, 'submitRating'])->name('site.complaints.submitRating');
+
+// e-PPID
+Route::get('/ppid/permohonan', [PpidRequestController::class, 'create'])->name('site.ppid.request_permohonan')->defaults('type', 'permohonan');
+Route::get('/ppid/keberatan', [PpidRequestController::class, 'create'])->name('site.ppid.request_keberatan')->defaults('type', 'keberatan');
+Route::post('/ppid/permohonan', [PpidRequestController::class, 'store'])->name('site.ppid.store')->defaults('type', 'permohonan');
+Route::post('/ppid/keberatan', [PpidRequestController::class, 'store'])->name('site.ppid.store_keberatan')->defaults('type', 'keberatan');
+Route::get('/ppid/lacak', [PpidRequestController::class, 'track'])->name('site.ppid.track');
+Route::post('/ppid/lacak', [PpidRequestController::class, 'trackResult'])->name('site.ppid.trackResult');
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
@@ -42,6 +54,11 @@ Route::get('/lowongan/{slug}', [SiteJobController::class, 'show'])->name('site.j
 Route::get('/program', [SiteProgramController::class, 'index'])->name('site.programs.index');
 Route::get('/transmigrasi', [SiteProgramController::class, 'transmigrasi'])->name('site.transmigrasi.index');
 Route::get('/program/{slug}', [SiteProgramController::class, 'show'])->name('site.programs.show');
+
+Route::get('/ppid/profil', [PpidController::class, 'profile'])->name('site.ppid.profile');
+Route::get('/ppid/standar-layanan', [PpidController::class, 'standards'])->name('site.ppid.standards');
+Route::get('/ppid/informasi-publik', [PpidController::class, 'documents'])->name('site.ppid.documents');
+Route::get('/ppid/download/{document}', [PpidController::class, 'download'])->name('site.ppid.download');
 
 ##Route::get('/storage/{path}', [\App\Http\Controllers\StorageController::class, 'show'])
     ##->where('path', '.*')
@@ -62,6 +79,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('posts', AdminPostController::class)->except('show');
         Route::resource('jobs', AdminJobController::class)->except('show');
         Route::resource('programs', AdminProgramController::class)->except('show');
+
+        Route::resource('ppid', PpidDocumentController::class)->except('show');
+
+                // PPID Admin (Gunakan nama alias AdminPpidRequestController)
+        Route::get('ppid/requests', [AdminPpidRequestController::class, 'index'])->name('ppid.requests.index');
+        Route::get('ppid/requests/{request_item}', [AdminPpidRequestController::class, 'show'])->name('ppid.requests.show');
+        Route::put('ppid/requests/{request_item}', [AdminPpidRequestController::class, 'update'])->name('ppid.requests.update');
 
         // Pengaturan Situs
         Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
