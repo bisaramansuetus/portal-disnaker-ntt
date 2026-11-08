@@ -65,6 +65,15 @@
                 <label class="block text-sm font-medium mb-1">YouTube URL</label>
                 <input type="url" name="youtube_url" value="{{ old('youtube_url', $settings['youtube_url'] ?? '') }}" class="w-full border rounded px-3 py-2" placeholder="https://youtube.com/...">
             </div>
+             <!-- TAMBAHKAN 2 INPUT INI -->
+            <div>
+                <label class="block text-sm font-medium mb-1">TikTok URL</label>
+                <input type="url" name="tiktok_url" value="{{ old('tiktok_url', $settings['tiktok_url'] ?? '') }}" class="w-full border rounded px-3 py-2" placeholder="https://tiktok.com/@...">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">WhatsApp URL</label>
+                <input type="url" name="whatsapp_url" value="{{ old('whatsapp_url', $settings['whatsapp_url'] ?? '') }}" class="w-full border rounded px-3 py-2" placeholder="https://wa.me/628...">
+            </div>
         </div>
 
                 <!-- BLOK GAMBAR SLIDER BERANDA (HERO) -->

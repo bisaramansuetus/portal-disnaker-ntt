@@ -27,17 +27,22 @@ class PpidDocumentController extends Controller
         return redirect()->route('admin.ppid.index')->with('success', 'Dokumen berhasil diunggah.');
     }
 
-    public function edit(PpidDocument $document)
+    public function edit($id)
     {
+        $document = PpidDocument::findOrFail($id);
         return view('admin.ppid.form', compact('document'));
     }
 
-    public function update(Request $request, PpidDocument $document)
+    public function update(Request $request, $id)
     {
+        $document = PpidDocument::findOrFail($id);
         $data = $this->validated($request, false);
         
         if ($request->hasFile('file')) {
-            Storage::disk('public')->delete($document->file_path);
+            // Cek dulu apakah file lama ada sebelum dihapus
+            if (!empty($document->file_path) && Storage::disk('public')->exists($document->file_path)) {
+                Storage::disk('public')->delete($document->file_path);
+            }
             $data['file_path'] = $request->file('file')->store('ppid', 'public');
         }
 
@@ -45,11 +50,24 @@ class PpidDocumentController extends Controller
         return redirect()->route('admin.ppid.index')->with('success', 'Dokumen diperbarui.');
     }
 
-    public function destroy(PpidDocument $document)
+    public function destroy($id)
     {
-        Storage::disk('public')->delete($document->file_path);
+        // Cari dokumen berdasarkan ID
+        $document = PpidDocument::find($id);
+        
+        if (!$document) {
+            return back()->withErrors(['msg' => 'Dokumen tidak ditemukan di database.']);
+        }
+
+        // Hapus file fisik jika ada
+        if (!empty($document->file_path) && Storage::disk('public')->exists($document->file_path)) {
+            Storage::disk('public')->delete($document->file_path);
+        }
+        
+        // Hapus dari database
         $document->delete();
-        return back()->with('success', 'Dokumen dihapus.');
+        
+        return back()->with('success', 'Dokumen berhasil dihapus.');
     }
 
     private function validated(Request $request, $requireFile = true): array

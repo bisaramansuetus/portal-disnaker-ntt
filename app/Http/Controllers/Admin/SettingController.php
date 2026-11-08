@@ -25,6 +25,8 @@ class SettingController extends Controller
             'facebook_url'     => 'nullable|url|max:255',
             'instagram_url'    => 'nullable|url|max:255',
             'youtube_url'      => 'nullable|url|max:255',
+            'tiktok_url'       => 'nullable|url|max:255', // Tambahan
+            'whatsapp_url'     => 'nullable|url|max:255', // Tambahan
             'logo'             => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'hero_image_1'     => 'nullable|image|max:3072',
             'hero_image_2'     => 'nullable|image|max:3072',
