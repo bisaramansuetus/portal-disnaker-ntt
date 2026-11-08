@@ -33,7 +33,7 @@
             </div>
             <div>
                 <h1 class="text-2xl font-bold text-slate-800 leading-tight">Panel Admin</h1>
-                <p class="text-sm text-slate-500 font-medium">Disnaker NTT</p>
+                <p class="text-sm text-slate-500 font-medium">DISNAKERTRANS-NTT</p>
             </div>
         </div>
 

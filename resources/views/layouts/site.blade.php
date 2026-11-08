@@ -48,10 +48,8 @@
 <body class="bg-ntt-cream text-slate-800 flex flex-col min-h-screen">
 
 {{-- HEADER (Merah Marun + Ornamen Komodo) --}}
-<header class="bg-ntt-red text-white shadow-lg sticky top-0 z-50 relative">
-    {{-- Ornamen Komodo (Jika ada gambar komodo.png di public/images) --}}
-    <div class="absolute inset-0 opacity-15 pointer-events-none bg-[url('/images/komodo.png')] bg-center bg-repeat-x" style="background-size: auto 100%;"></div>
-
+{{-- HEADER (Kembali ke Warna Awal) --}}
+<header class="bg-slate-800 text-white shadow sticky top-0 z-50 relative">
     <div class="max-w-6xl mx-auto px-4 relative z-10">
         <div class="flex items-center justify-between h-20">
             <a href="{{ route('home') }}" class="flex items-center gap-3">
@@ -59,37 +57,37 @@
                 @if ($logo)
                     <img src="{{ asset('storage/' . $logo) }}" alt="Logo" class="h-12 w-auto bg-white rounded p-1 shadow">
                 @else
-                    <div class="h-12 w-12 bg-white rounded flex items-center justify-center text-[10px] text-ntt-red font-bold">Logo</div>
+                    <div class="h-12 w-12 bg-slate-700 rounded flex items-center justify-center text-[10px] text-slate-400 font-bold">Logo</div>
                 @endif
                 <div class="flex flex-col leading-tight">
-                    <span class="font-bold text-xl tracking-wide">{{ \App\Models\SiteSetting::get('site_name', 'Disnaker NTT') }}</span>
-                    <span class="text-xs text-yellow-100 tracking-wider">{{ \App\Models\SiteSetting::get('site_tagline', 'Portal Informasi Publik') }}</span>
+                    <span class="font-bold text-xl tracking-wide">{{ \App\Models\SiteSetting::get('site_name', 'DISNAKERTRANS NTT') }}</span>
+                    <span class="text-xs text-slate-300 tracking-wider">{{ \App\Models\SiteSetting::get('site_tagline', 'Portal Informasi Publik') }}</span>
                 </div>
             </a>
             
-            <button id="navToggle" class="md:hidden text-2xl leading-none text-ntt-gold">☰</button>
+            <button id="navToggle" class="md:hidden text-2xl leading-none text-white">☰</button>
 
             {{-- MENU DESKTOP --}}
             <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
-                <a href="{{ route('home') }}" class="px-3 py-2 rounded hover:bg-ntt-lightred {{ request()->routeIs('home') ? 'bg-ntt-lightred' : '' }}">Beranda</a>
-                <a href="{{ route('site.profile') }}" class="px-3 py-2 rounded hover:bg-ntt-lightred {{ request()->routeIs('site.profile') ? 'bg-ntt-lightred' : '' }}">Profil Dinas</a>
+                <a href="{{ route('home') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('home') ? 'bg-slate-700' : '' }}">Beranda</a>
+                <a href="{{ route('site.profile') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.profile') ? 'bg-slate-700' : '' }}">Profil Dinas</a>
 
                 {{-- DROPDOWN DESKTOP --}}
                 <div class="relative" id="dropdownInformasiContainer">
-                    <button type="button" id="dropdownInformasiButton" class="px-3 py-2 rounded hover:bg-ntt-lightred flex items-center gap-1 focus:outline-none">
+                    <button type="button" id="dropdownInformasiButton" class="px-3 py-2 rounded hover:bg-slate-700 flex items-center gap-1 focus:outline-none">
                         Informasi <span class="text-xs transition-transform duration-200" id="dropdownArrow">▼</span>
                     </button>
                     <div id="dropdownInformasiMenu" class="hidden absolute left-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-slate-800 z-50 border border-gray-100">
-                        <a href="{{ route('site.posts.index') }}" class="block px-4 py-2 hover:bg-ntt-cream hover:text-ntt-red transition font-medium">Berita</a>
-                        <a href="{{ route('site.announcements.index') }}" class="block px-4 py-2 hover:bg-ntt-cream hover:text-ntt-red transition font-medium">Pengumuman</a>
-                        <a href="{{ route('site.jobs.index') }}" class="block px-4 py-2 hover:bg-ntt-cream hover:text-ntt-red transition font-medium">Lowongan</a>
-                        <a href="{{ route('site.transmigrasi.index') }}" class="block px-4 py-2 hover:bg-ntt-cream hover:text-ntt-red transition font-medium">Transmigrasi</a>
+                        <a href="{{ route('site.posts.index') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Berita</a>
+                        <a href="{{ route('site.announcements.index') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Pengumuman</a>
+                        <a href="{{ route('site.jobs.index') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Lowongan</a>
+                        <a href="{{ route('site.transmigrasi.index') }}" class="block px-4 py-2 hover:bg-slate-100 hover:text-slate-800 transition font-medium">Transmigrasi</a>
                     </div>
                 </div>
 
-                <a href="{{ route('site.programs.index') }}" class="px-3 py-2 rounded hover:bg-ntt-lightred {{ request()->routeIs('site.programs.*') ? 'bg-ntt-lightred' : '' }}">Program</a>
-                <a href="{{ route('site.complaints.create') }}" class="px-3 py-2 rounded hover:bg-ntt-lightred {{ request()->routeIs('site.complaints.create') ? 'bg-ntt-lightred' : '' }}">Pengaduan</a>
-                <a href="{{ route('site.contact') }}" class="px-3 py-2 rounded hover:bg-ntt-lightred {{ request()->routeIs('site.contact') ? 'bg-ntt-lightred' : '' }}">Kontak</a>
+                <a href="{{ route('site.programs.index') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.programs.*') ? 'bg-slate-700' : '' }}">Program</a>
+                <a href="{{ route('site.complaints.create') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.complaints.create') ? 'bg-slate-700' : '' }}">Pengaduan</a>
+                <a href="{{ route('site.contact') }}" class="px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('site.contact') ? 'bg-slate-700' : '' }}">Kontak</a>
                 
                 <a href="{{ route('site.complaints.track') }}" class="ml-2 px-4 py-2 rounded-md bg-ntt-gold text-ntt-red font-bold hover:bg-yellow-300 transition shadow">
                     Lacak Pengaduan
@@ -98,28 +96,28 @@
         </div>
 
         {{-- MENU MOBILE --}}
-        <nav id="mobileNav" class="hidden md:hidden pb-3 space-y-1 text-sm border-t border-red-900 mt-2 pt-2">
-            <a href="{{ route('home') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Beranda</a>
-            <a href="{{ route('site.profile') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Profil Dinas</a>
+        <nav id="mobileNav" class="hidden md:hidden pb-3 space-y-1 text-sm border-t border-slate-700 mt-2 pt-2">
+            <a href="{{ route('home') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Beranda</a>
+            <a href="{{ route('site.profile') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Profil Dinas</a>
 
             <details class="group">
-                <summary class="cursor-pointer list-none flex justify-between items-center px-3 py-2 rounded hover:bg-ntt-lightred select-none">
+                <summary class="cursor-pointer list-none flex justify-between items-center px-3 py-2 rounded hover:bg-slate-700 select-none">
                     <span>Informasi</span>
-                    <span class="text-xs transition-transform group-open:rotate-180 text-ntt-gold">▼</span>
+                    <span class="text-xs transition-transform group-open:rotate-180 text-slate-300">▼</span>
                 </summary>
-                <div class="pl-4 pb-2 space-y-1 text-gray-200 bg-ntt-lightred/50 rounded mt-1">
-                    <a href="{{ route('site.posts.index') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Berita</a>
-                    <a href="{{ route('site.announcements.index') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Pengumuman</a>
-                    <a href="{{ route('site.jobs.index') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Lowongan</a>
-                    <a href="{{ route('site.transmigrasi.index') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Transmigrasi</a>
+                <div class="pl-4 pb-2 space-y-1 text-slate-300 bg-slate-700/50 rounded mt-1">
+                    <a href="{{ route('site.posts.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Berita</a>
+                    <a href="{{ route('site.announcements.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Pengumuman</a>
+                    <a href="{{ route('site.jobs.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Lowongan</a>
+                    <a href="{{ route('site.transmigrasi.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Transmigrasi</a>
                 </div>
             </details>
 
-            <a href="{{ route('site.programs.index') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Program</a>
-            <a href="{{ route('site.complaints.create') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Pengaduan</a>
-            <a href="{{ route('site.contact') }}" class="block px-3 py-2 rounded hover:bg-ntt-lightred">Kontak</a>
+            <a href="{{ route('site.programs.index') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Program</a>
+            <a href="{{ route('site.complaints.create') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Pengaduan</a>
+            <a href="{{ route('site.contact') }}" class="block px-3 py-2 rounded hover:bg-slate-700">Kontak</a>
             
-            <div class="pt-2 mt-2 border-t border-red-900">
+            <div class="pt-2 mt-2 border-t border-slate-700">
                 <a href="{{ route('site.complaints.track') }}" class="block px-3 py-2 rounded bg-ntt-gold text-ntt-red font-bold text-center hover:bg-yellow-300 transition">
                     🔍 Lacak Pengaduan
                 </a>
@@ -141,7 +139,7 @@
                 @if ($logo)
                     <img src="{{ asset('storage/' . $logo) }}" alt="Logo" class="h-12 w-auto bg-white rounded p-1">
                 @endif
-                <h3 class="font-bold text-white text-lg tracking-wide">{{ \App\Models\SiteSetting::get('site_name', 'Disnaker NTT') }}</h3>
+                <h3 class="font-bold text-white text-lg tracking-wide">{{ \App\Models\SiteSetting::get('site_name', 'DISNAKERTRANS-NTT') }}</h3>
             </div>
             <p class="text-yellow-100/80">{{ \App\Models\SiteSetting::get('site_tagline', 'Portal Informasi Publik') }}</p>
         </div>

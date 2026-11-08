@@ -29,7 +29,7 @@
                 @endif
             </div>
             <div class="flex flex-col leading-tight">
-                <h1 class="font-bold text-sm text-white">Disnaker NTT</h1>
+                <h1 class="font-bold text-sm text-white">DISNAKERTRANS NTT</h1>
                 <p class="text-[11px] text-slate-400">Panel Admin</p>
             </div>
         </div>

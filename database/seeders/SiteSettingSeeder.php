@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 class SiteSettingSeeder extends Seeder {
     public function run(): void {
         $defaults = [
-            'site_name' => 'Dinas Ketenagakerjaan NTT',
+            'site_name' => 'DISNAKERTRANS-NTT',
             'site_tagline' => 'Portal Informasi Publik',
             'office_address' => 'Jl. ... (lengkapi alamat kantor)',
             'office_phone' => '(0380) ...',
