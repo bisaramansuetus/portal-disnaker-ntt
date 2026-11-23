@@ -48,27 +48,35 @@
                 <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-3">MENU UTAMA</p>
                 <nav class="space-y-1 text-sm">
                     @php
-                        $menus = [
-                            ['num' => '01', 'label' => 'Dashboard', 'route' => 'admin.dashboard', 'pattern' => 'admin.dashboard'],
-                            ['num' => '02', 'label' => 'Berita & Pengumuman', 'route' => 'admin.posts.index', 'pattern' => 'admin.posts.*'],
-                            ['num' => '03', 'label' => 'Kategori', 'route' => 'admin.categories.index', 'pattern' => 'admin.categories.*'],
-                            ['num' => '04', 'label' => 'Lowongan Kerja', 'route' => 'admin.jobs.index', 'pattern' => 'admin.jobs.*'],
-                            ['num' => '05', 'label' => 'Program & Pelatihan', 'route' => 'admin.programs.index', 'pattern' => 'admin.programs.*'],
-                            ['num' => '06', 'label' => 'Pengaduan Masyarakat', 'route' => 'admin.complaints.index', 'pattern' => 'admin.complaints.*'],
-                            ['num' => '07', 'label' => 'Dokumen PPID', 'route' => 'admin.ppid.index', 'pattern' => 'admin.ppid.index'], // Route disesuaikan
-                            ['num' => '08', 'label' => 'Permohonan PPID', 'route' => 'admin.ppid.requests.index', 'pattern' => 'admin.ppid.requests.*'],
-                            ['num' => '09', 'label' => 'Pengaturan Situs', 'route' => 'admin.settings.edit', 'pattern' => 'admin.settings.*'],
+                        $menu = [
+                            ['route' => 'admin.dashboard', 'label' => 'Dashboard', 'icon' => '🏠', 'pattern' => 'admin.dashboard'],
+                            ['route' => 'admin.posts.index', 'label' => 'Berita & Pengumuman', 'icon' => '📰', 'pattern' => 'admin.posts.*'],
+                            ['route' => 'admin.categories.index', 'label' => 'Kategori', 'icon' => '🏷️', 'pattern' => 'admin.categories.*'],
+                            ['route' => 'admin.jobs.index', 'label' => 'Lowongan Kerja', 'icon' => '💼', 'pattern' => 'admin.jobs.*'],
+                            ['route' => 'admin.programs.index', 'label' => 'Program & Pelatihan', 'icon' => '🎓', 'pattern' => 'admin.programs.*'],
+                            ['route' => 'admin.complaints.index', 'label' => 'Pengaduan Masyarakat', 'icon' => '📢', 'pattern' => 'admin.complaints.*'],
+                            ['route' => 'admin.ppid.index', 'label' => 'Dokumen PPID', 'icon' => '📂', 'pattern' => 'admin.ppid.index'],
+                            ['route' => 'admin.ppid.requests.index', 'label' => 'Permohonan PPID', 'icon' => '📝', 'pattern' => 'admin.ppid.requests.*'],
+                            
+                            // --- MENU BARU STRUKTUR ---
+                            ['route' => 'admin.structures.index', 'label' => 'Struktur Organisasi', 'icon' => '🏢', 'pattern' => 'admin.structures.*'],
+                            
+                            ['route' => 'admin.settings.edit', 'label' => 'Pengaturan Situs', 'icon' => '⚙️', 'pattern' => 'admin.settings.*'],
                         ];
                     @endphp
 
-                    @foreach($menus as $menu)
-                        @php $isActive = request()->routeIs($menu['pattern']); @endphp
-                        <a href="{{ route($menu['route']) }}"
+                                    
+                    @foreach($menu as $item)
+                        @php $isActive = request()->routeIs($item['pattern']); @endphp
+                        <a href="{{ route($item['route']) }}"
                            class="flex items-center px-3 py-2.5 rounded-xl transition {{ $isActive ? 'bg-[#D1E7DD] text-[#112F28] font-semibold' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}">
-                            <span class="text-xs font-mono mr-3 {{ $isActive ? 'text-[#112F28]/70' : 'text-gray-400' }}">{{ $menu['num'] }}</span>
-                            <span>{{ $menu['label'] }}</span>
+                            <span class="text-base mr-3 {{ $isActive ? 'opacity-100' : 'opacity-70' }}">
+                                {{ $item['icon'] }}
+                            </span>
+                            <span>{{ $item['label'] }}</span>
                         </a>
                     @endforeach
+                </nav>
                 </nav>
             </div>
         </div>

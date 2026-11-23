@@ -40,9 +40,11 @@ class DashboardController extends Controller
         $attention = [
             'unresponded_complaints' => $this->safeCount('complaints', function ($q) {
                 if (Schema::hasColumn('complaints', 'status')) {
-                    $q->where('status', 'pending');
+                    // Menghitung status pending (mengabaikan huruf besar/kecil)
+                    $q->whereRaw('LOWER(status) = ?', ['pending']);
                 }
             }),
+            // ... kode lainnya tetap sama ...
             'pending_ppid' => $stats['ppid_pending'],
             'draft_posts' => $this->safeCount('posts', function ($q) {
                 if (Schema::hasColumn('posts', 'status')) {
