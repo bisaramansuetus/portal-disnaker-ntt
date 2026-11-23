@@ -1,62 +1,92 @@
 @extends('layouts.admin')
-@section('title', 'Program & Pelatihan')
 
 @section('content')
-    <div class="flex items-center justify-between mb-4">
-        <h1 class="text-2xl font-bold text-slate-800">Program & Pelatihan</h1>
-        <a href="{{ route('admin.programs.create') }}" class="bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-900">+ Program</a>
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-extrabold text-gray-900">Program & pelatihan</h1>
+            <p class="text-sm text-gray-500 mt-1">Kelola program pelatihan vokasi, kuota peserta, dan informasi transmigrasi.</p>
+        </div>
+        <a href="{{ route('admin.programs.create') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-[#112F28] hover:bg-[#1B4A40] text-white text-sm font-semibold rounded-xl transition">
+            + Tambah program
+        </a>
     </div>
 
-    <form method="GET" class="bg-white rounded-lg shadow p-4 mb-4 grid grid-cols-1 md:grid-cols-4 gap-3">
-        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari judul..." class="border rounded px-3 py-2 md:col-span-2">
-        <select name="type" class="border rounded px-3 py-2">
-            <option value="">— Tipe —</option>
-            <option value="program" @selected(request('type')==='program')>Program</option>
-            <option value="pelatihan" @selected(request('type')==='pelatihan')>Pelatihan</option>
-            <option value="transmigrasi" @selected(request('type')==='transmigrasi')>Transmigrasi</option>
+    <form method="GET" class="bg-white p-4 rounded-2xl border border-gray-100 shadow-xs flex flex-col sm:flex-row gap-3">
+        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama program..."
+               class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-[#112F28] focus:outline-none">
+        <select name="category" class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:ring-2 focus:ring-[#112F28] focus:outline-none">
+            <option value="">Semua jenis program</option>
+            <option value="pelatihan" {{ request('category') == 'pelatihan' ? 'selected' : '' }}>Pelatihan Vokasi</option>
+            <option value="transmigrasi" {{ request('category') == 'transmigrasi' ? 'selected' : '' }}>Transmigrasi</option>
         </select>
-        <button class="bg-slate-800 text-white rounded px-4 py-2">Terapkan</button>
+        <button type="submit" class="px-6 py-2.5 bg-[#E3EAE5] hover:bg-[#D1E7DD] text-[#112F28] font-semibold text-sm rounded-xl transition">Terapkan</button>
     </form>
 
-    <div class="bg-white rounded-lg shadow overflow-x-auto">
-        <table class="w-full text-sm">
-            <thead class="bg-gray-50 border-b text-left text-gray-600">
-                <tr>
-                    <th class="px-4 py-3">Judul</th>
-                    <th class="px-4 py-3">Tipe</th>
-                    <th class="px-4 py-3">Jadwal</th>
-                    <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3 text-right">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y">
-                @forelse ($programs as $p)
-                    <tr>
-                        <td class="px-4 py-3 font-medium">{{ $p->title }}</td>
-                        <td class="px-4 py-3 capitalize">{{ $p->type }}</td>
-                        <td class="px-4 py-3 text-xs text-gray-600">
-                            @if ($p->start_date)
-                                {{ $p->start_date->format('d M Y') }} – {{ $p->end_date?->format('d M Y') ?? '-' }}
-                            @else - @endif
-                        </td>
-                        <td class="px-4 py-3">
-                            <span class="text-xs px-2 py-1 rounded {{ $p->status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-                                {{ $p->status }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-3 text-right space-x-2 whitespace-nowrap">
-                            <a href="{{ route('admin.programs.edit', $p) }}" class="text-blue-600 hover:underline">Edit</a>
-                            <form method="POST" action="{{ route('admin.programs.destroy', $p) }}" class="inline" onsubmit="return confirm('Hapus program ini?')">
-                                @csrf @method('DELETE')
-                                <button class="text-red-600 hover:underline">Hapus</button>
-                            </form>
-                        </td>
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-xs overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-[#E3EAE5]/60 text-xs font-semibold text-gray-700 border-b border-gray-200">
+                        <th class="py-3.5 px-6">Nama program</th>
+                        <th class="py-3.5 px-6">Kuota & Biaya</th>
+                        <th class="py-3.5 px-6">Jadwal</th>
+                        <th class="py-3.5 px-6">Status</th>
+                        <th class="py-3.5 px-6 text-right">Aksi</th>
                     </tr>
-                @empty
-                    <tr><td colspan="5" class="text-center py-6 text-gray-500">Belum ada program.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-sm">
+                    @forelse($programs ?? [] as $program)
+                        <tr class="hover:bg-gray-50/80 transition">
+                            <td class="py-4 px-6">
+                                <div class="font-semibold text-gray-900">{{ $program->title }}</div>
+                                <div class="text-xs text-gray-500 capitalize">{{ $program->type }}</div>
+                            </td>
+                            <td class="py-4 px-6 text-xs text-gray-600">
+                                {{ $program->quota ?? '-' }} peserta &bull; {{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}
+                            </td>
+                            <td class="py-4 px-6 text-xs text-gray-600">
+                                {{ $program->start_date ? $program->start_date->format('d M Y') : '-' }}
+                            </td>
+                            <td class="py-4 px-6">
+                                @if($program->status === 'published')
+                                    <x-badge variant="success">Terbit</x-badge>
+                                @else
+                                    <x-badge variant="neutral">Draf</x-badge>
+                                @endif
+                            </td>
+                            <td class="py-4 px-6 text-right space-x-2 text-xs font-medium">
+                                <a href="{{ route('site.programs.show', $program->slug) }}" target="_blank" class="text-gray-600 hover:underline">Lihat</a>
+                                <span class="text-gray-300">&bull;</span>
+                                <a href="{{ route('admin.programs.edit', $program->id) }}" class="text-[#112F28] hover:underline">Edit</a>
+                                <span class="text-gray-300">&bull;</span>
+                                <button type="button" onclick="openDeleteProgramModal('{{ route('admin.programs.destroy', $program->id) }}', '{{ addslashes($program->title) }}')" class="text-red-600 hover:underline">Hapus</button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="5" class="py-8 px-6 text-center text-gray-400 text-sm">Belum ada program terdaftar.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="mt-4">{{ $programs->links() }}</div>
+
+    @if(isset($programs) && method_exists($programs, 'links'))
+        <x-pagination :paginator="$programs" />
+    @endif
+</div>
+
+<x-modal-delete id="deleteProgramModal" title="Hapus program ini?" message="Program yang dihapus tidak akan tampil di halaman informasi publik." />
+
+@push('scripts')
+<script>
+    function openDeleteProgramModal(actionUrl, title) {
+        const modal = document.getElementById('deleteProgramModal');
+        const form = document.getElementById('deleteProgramModal-form');
+        form.action = actionUrl;
+        modal.querySelector('p').innerHTML = `Program "<strong>${title}</strong>" akan dihapus. Tindakan ini tidak dapat dibatalkan.`;
+        modal.classList.remove('hidden');
+    }
+</script>
+@endpush
 @endsection

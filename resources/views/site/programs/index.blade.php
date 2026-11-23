@@ -1,42 +1,102 @@
 @extends('layouts.site')
-@section('title', $pageTitle)
 
 @section('content')
-    <div class="max-w-6xl mx-auto px-4 py-10">
-        <h1 class="text-2xl font-bold mb-6">{{ $pageTitle }}</h1>
+@php
+    $isTransmigration = request('type') === 'transmigrasi' || ($mode ?? '') === 'transmigration';
+    $pageTitle = $isTransmigration ? 'Harapan baru, bersama transmigrasi.' : 'Belajar, tumbuh, berdaya.';
+    $pageSubtitle = $isTransmigration
+        ? 'Kenali program, persyaratan, dan proses pendampingan transmigrasi.'
+        : 'Pilih pelatihan sesuai minat dan kembangkan keterampilan yang relevan.';
+    $breadcrumbLabel = $isTransmigration ? 'Harapan baru, bersama transmigrasi' : 'Belajar, tumbuh, berdaya';
+@endphp
 
-        @if ($pageTitle === 'Program & Pelatihan')
-            <form method="GET" class="bg-white rounded-lg shadow p-4 mb-6 grid grid-cols-1 md:grid-cols-3 gap-3">
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari program..." class="border rounded px-3 py-2 md:col-span-2">
-                <select name="type" class="border rounded px-3 py-2">
-                    <option value="">— Semua Tipe —</option>
-                    <option value="program" @selected(request('type')==='program')>Program</option>
-                    <option value="pelatihan" @selected(request('type')==='pelatihan')>Pelatihan</option>
-                </select>
-            </form>
-        @endif
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+    <!-- Breadcrumb -->
+    <nav class="text-xs text-gray-500 mb-4">
+        <a href="{{ route('home') }}" class="hover:underline">Beranda</a> / <span>Informasi</span> / <span class="text-gray-900 font-medium">{{ $breadcrumbLabel }}</span>
+    </nav>
 
-        @if ($programs->isEmpty())
-            <p class="text-gray-500">Belum ada program tersedia.</p>
-        @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                @foreach ($programs as $p)
-                    <a href="{{ route('site.programs.show', $p->slug) }}" class="bg-white rounded-lg shadow hover:shadow-lg p-5 transition flex flex-col">
-                        <p class="text-xs uppercase font-semibold text-orange-600">{{ $p->type }}</p>
-                        <h3 class="font-semibold text-lg mt-1 mb-2">{{ $p->title }}</h3>
-                        @if ($p->start_date)
-                            <p class="text-sm text-gray-600">📅 {{ $p->start_date->format('d M Y') }} – {{ $p->end_date?->format('d M Y') ?? '-' }}</p>
-                        @endif
-                        @if ($p->schedule_info)
-                            <p class="text-sm text-gray-600 mt-1 line-clamp-2">{{ $p->schedule_info }}</p>
-                        @endif
-                        @if ($p->quota)
-                            <p class="text-xs text-slate-500 mt-auto pt-3">Kuota: {{ $p->quota }}</p>
-                        @endif
-                    </a>
-                @endforeach
-            </div>
-            <div class="mt-6">{{ $programs->links() }}</div>
-        @endif
+    <!-- Header -->
+    <div class="max-w-2xl mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">{{ $pageTitle }}</h1>
+        <p class="text-sm sm:text-base text-gray-600">{{ $pageSubtitle }}</p>
     </div>
+
+    <!-- Search & Filter Bar -->
+    <form method="GET" action="{{ route('site.programs.index') }}" class="bg-white rounded-2xl p-2.5 border border-gray-200/80 shadow-xs flex flex-col md:flex-row items-stretch md:items-center gap-2 mb-6">
+        @if($isTransmigration)
+            <input type="hidden" name="type" value="transmigrasi">
+        @endif
+
+        <div class="flex-1 flex items-center px-3">
+            <x-icon name="search" class="w-4 h-4 text-gray-400 mr-2.5 flex-shrink-0" />
+            <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari program..."
+                   class="w-full py-2 text-sm text-gray-800 placeholder-gray-400 focus:outline-none">
+        </div>
+
+        <div class="hidden md:block w-px h-6 bg-gray-200"></div>
+
+        <div class="px-2">
+            <select name="category" class="w-full md:w-44 py-2 text-sm text-gray-700 bg-transparent focus:outline-none">
+                <option value="">Kategori / jenis</option>
+                <option value="pelatihan" {{ request('category') == 'pelatihan' ? 'selected' : '' }}>Pelatihan Vokasi</option>
+                <option value="transmigrasi" {{ request('category') == 'transmigrasi' ? 'selected' : '' }}>Transmigrasi</option>
+            </select>
+        </div>
+
+        <button type="submit" class="px-7 py-2.5 bg-[#112F28] hover:bg-[#1B4A40] text-white text-sm font-semibold rounded-full transition">
+            Cari
+        </button>
+    </form>
+
+    <!-- Programs Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @forelse($programs as $program)
+            <a href="{{ route('site.programs.show', $program->slug) }}"
+               class="bg-white rounded-3xl p-6 sm:p-7 border border-gray-100 shadow-xs hover:shadow-md transition flex flex-col justify-between group">
+                <div>
+                    <div class="mb-4">
+                        <x-badge variant="success">Pendaftaran dibuka</x-badge>
+                    </div>
+
+                    <h2 class="text-xl font-bold text-gray-900 group-hover:text-[#112F28] transition mb-1">
+                        {{ $program->title }}
+                    </h2>
+                    <p class="text-sm text-gray-600 mb-4">
+                        UPTD Pelatihan Kerja Kupang
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-gray-600 mb-5">
+                        <span>{{ $program->quota ?? '30' }} peserta</span>
+                        <span>&bull;</span>
+                        <span>{{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}</span>
+                        <span>&bull;</span>
+                        <span>Kupang</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
+                    <span class="text-amber-700 font-medium">
+                        @if($program->start_date)
+                            Pendaftaran ditutup: {{ $program->start_date->format('d M Y') }}
+                        @else
+                            Jadwal menyusul
+                        @endif
+                    </span>
+                    <span class="text-base font-bold text-[#112F28] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">&nearr;</span>
+                </div>
+            </a>
+        @empty
+            <div class="col-span-full bg-white rounded-3xl p-12 text-center border border-gray-100">
+                <p class="text-gray-500 text-sm">Belum ada program yang tersedia saat ini.</p>
+            </div>
+        @endforelse
+    </div>
+
+    <x-pagination :paginator="$programs" />
+
+    <p class="text-xs text-gray-400 mt-8">
+        Informasi lengkap dan pendaftaran tersedia pada halaman masing-masing program.
+    </p>
+</div>
 @endsection

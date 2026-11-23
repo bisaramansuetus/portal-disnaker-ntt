@@ -6,6 +6,7 @@
 
     <form method="POST"
           action="{{ $program->exists ? route('admin.programs.update', $program) : route('admin.programs.store') }}"
+          enctype="multipart/form-data"
           class="bg-white rounded-lg shadow p-6 max-w-4xl space-y-4">
         @csrf
         @if ($program->exists) @method('PUT') @endif
@@ -70,6 +71,18 @@
                 <input type="text" name="registration_url" value="{{ old('registration_url', $program->registration_url) }}" maxlength="255" class="w-full border rounded px-3 py-2">
             </div>
 
+                        {{-- Tambahkan blok ini di dalam form --}}
+            <div class="md:col-span-2 bg-gray-50 p-4 rounded-xl border">
+                <label class="block text-sm font-medium mb-2">Gambar Program (Opsional)</label>
+                @if ($program->exists && $program->image)
+                    <div class="mb-3">
+                        <img src="{{ asset('storage/' . $program->image) }}" class="h-32 object-cover rounded-lg border shadow-sm">
+                    </div>
+                @endif
+                <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#D1E7DD] file:text-[#112F28] hover:file:bg-[#A3CFBB]">
+                <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, WEBP. Maks 2MB.</p>
+            </div>
+
             <div class="md:col-span-2">
                 <label class="flex items-center gap-2 text-sm">
                     <input type="checkbox" name="is_featured" value="1" @checked(old('is_featured', $program->is_featured))>
@@ -98,7 +111,7 @@
         convert_urls: false,
         
         // FITUR TAB YANG AMAN (Tanpa merusak toolbar)
-                setup: function (editor) {
+            setup: function (editor) {
             editor.on('keydown', function (e) {
                 // Dapatkan elemen blok (paragraf/heading) tempat kursor berada
                 var block = editor.dom.getParent(editor.selection.getNode(), 'p,h1,h2,h3,h4,h5,h6');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProgramController extends Controller
 {
@@ -28,6 +29,11 @@ class ProgramController extends Controller
     {
         $data = $this->validated($request);
         $data['slug'] = Program::generateUniqueSlug($data['title']);
+        
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('programs', 'public');
+        }
+
         Program::create($data);
         return redirect()->route('admin.programs.index')->with('success', 'Program dibuat.');
     }
@@ -41,12 +47,24 @@ class ProgramController extends Controller
     {
         $data = $this->validated($request);
         $data['slug'] = Program::generateUniqueSlug($data['title'], $program->id);
+        
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($program->image) {
+                Storage::disk('public')->delete($program->image);
+            }
+            $data['image'] = $request->file('image')->store('programs', 'public');
+        }
+
         $program->update($data);
         return redirect()->route('admin.programs.index')->with('success', 'Program diperbarui.');
     }
 
     public function destroy(Program $program)
     {
+        if ($program->image) {
+            Storage::disk('public')->delete($program->image);
+        }
         $program->delete();
         return back()->with('success', 'Program dihapus.');
     }
@@ -66,6 +84,7 @@ class ProgramController extends Controller
             'registration_url' => 'nullable|string|max:255',
             'status'        => 'required|in:draft,published',
             'is_featured'   => 'nullable|boolean',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]) + ['is_featured' => $request->boolean('is_featured')];
     }
 }

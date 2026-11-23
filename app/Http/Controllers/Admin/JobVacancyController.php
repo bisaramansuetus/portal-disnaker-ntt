@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 
 class JobVacancyController extends Controller
 {
-    public function index(Request $request)
+        public function index(Request $request)
     {
-        $query = JobVacancy::latest();
+        $query = \App\Models\JobVacancy::latest();
+
         if ($request->filled('status')) $query->where('status', $request->status);
-        if ($request->filled('q')) $query->where('title', 'like', '%'.$request->q.'%');
+        if ($request->filled('q'))      $query->where('title', 'like', '%'.$request->q.'%');
+        if ($request->filled('type'))   $query->where('job_type', $request->type);
+
         $jobs = $query->paginate(15)->withQueryString();
+        
+        // PASTIKAN MENGGUNAKAN 'admin.jobs.index'
         return view('admin.jobs.index', compact('jobs'));
     }
 

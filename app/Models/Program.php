@@ -8,10 +8,10 @@ use Illuminate\Support\Str;
 class Program extends Model {
     use SoftDeletes;
 
-    protected $fillable = [
+        protected $fillable = [
         'title', 'slug', 'type', 'description', 'requirements', 'schedule_info',
         'start_date', 'end_date', 'quota', 'fee', 'registration_url',
-        'status', 'is_featured',
+        'status', 'is_featured', 'image', // <-- Tambahkan image di sini
     ];
 
     protected $casts = [

@@ -1,62 +1,78 @@
 @extends('layouts.admin')
-@section('title', 'Pengaduan Masyarakat')
 
 @section('content')
-    <div class="flex items-center justify-between mb-4">
-        <h1 class="text-2xl font-bold text-slate-800">Pengaduan Masyarakat</h1>
+<div class="space-y-6">
+    <div>
+        <h1 class="text-2xl font-extrabold text-gray-900">Pengaduan masyarakat</h1>
+        <p class="text-sm text-gray-500 mt-1">Tinjau tiket pengaduan, perbarui status penanganan, dan kirim tanggapan resmi.</p>
     </div>
 
-    <form method="GET" class="bg-white rounded-lg shadow p-4 mb-4 grid grid-cols-1 md:grid-cols-4 gap-3">
-        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari No. Tiket / Judul..." class="border rounded px-3 py-2 md:col-span-2">
-        <select name="status" class="border rounded px-3 py-2">
-            <option value="">— Semua Status —</option>
-            <option value="pending" @selected(request('status')==='pending')>Pending</option>
-            <option value="proses" @selected(request('status')==='proses')>Proses</option>
-            <option value="selesai" @selected(request('status')==='selesai')>Selesai</option>
+    <form method="GET" class="bg-white p-4 rounded-2xl border border-gray-100 shadow-xs flex flex-col sm:flex-row gap-3">
+        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari kode tiket atau judul..."
+               class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-[#112F28] focus:outline-none">
+        <select name="status" class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:ring-2 focus:ring-[#112F28] focus:outline-none">
+            <option value="">Semua status</option>
+            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+            <option value="proses" {{ request('status') == 'proses' ? 'selected' : '' }}>Proses</option>
+            <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
         </select>
-        <button class="bg-slate-800 text-white rounded px-4 py-2">Cari</button>
+        <button type="submit" class="px-6 py-2.5 bg-[#E3EAE5] hover:bg-[#D1E7DD] text-[#112F28] font-semibold text-sm rounded-xl transition">Terapkan</button>
     </form>
 
-    <div class="bg-white rounded-lg shadow overflow-x-auto">
-        <table class="w-full text-sm text-left">
-            <thead class="bg-gray-50 border-b text-gray-600">
-                <tr>
-                    <th class="px-4 py-3">No. Tiket</th>
-                    <th class="px-4 py-3">Tanggal</th>
-                    <th class="px-4 py-3">Pelapor</th>
-                    <th class="px-4 py-3">Judul Laporan</th>
-                    <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3 text-right">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y">
-                @forelse ($complaints as $c)
-                    <tr>
-                        <td class="px-4 py-3 font-mono text-xs font-bold">{{ $c->ticket_number }}</td>
-                        <td class="px-4 py-3">{{ $c->created_at->format('d/m/Y') }}</td>
-                        <td class="px-4 py-3">
-                            {{ $c->is_anonymous ? 'Anonim' : $c->name }}
-                            <span class="block text-xs text-gray-500">{{ $c->category->name }}</span>
-                        </td>
-                        <td class="px-4 py-3 font-medium">{{ Str::limit($c->title, 40) }}</td>
-                        <td class="px-4 py-3">
-                            @if($c->status == 'pending')
-                                <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded">Pending</span>
-                            @elseif($c->status == 'proses')
-                                <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded">Proses</span>
-                            @else
-                                <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">Selesai</span>
-                            @endif
-                        </td>
-                        <td class="px-4 py-3 text-right">
-                            <a href="{{ route('admin.complaints.show', $c) }}" class="text-blue-600 hover:underline">Detail</a>
-                        </td>
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-xs overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-[#E3EAE5]/60 text-xs font-semibold text-gray-700 border-b border-gray-200">
+                        <th class="py-3.5 px-6">Tiket</th>
+                        <th class="py-3.5 px-6">Judul & pelapor</th>
+                        <th class="py-3.5 px-6">Tanggal</th>
+                        <th class="py-3.5 px-6">Status</th>
+                        <th class="py-3.5 px-6 text-right">Aksi</th>
                     </tr>
-                @empty
-                    <tr><td colspan="6" class="text-center py-6 text-gray-500">Belum ada pengaduan masuk.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-sm">
+                    @forelse($complaints ?? [] as $complaint)
+                        @php $st = $complaint->status ?? 'pending'; @endphp
+                        <tr class="hover:bg-gray-50/80 transition">
+                            <td class="py-4 px-6 font-mono text-xs font-bold text-[#112F28]">
+                                {{ $complaint->ticket_number }}
+                            </td>
+                            <td class="py-4 px-6">
+                                <div class="font-semibold text-gray-900">{{ $complaint->title }}</div>
+                                <div class="text-xs text-gray-500">
+                                    {{ $complaint->is_anonymous ? 'Anonim' : $complaint->name }}
+                                    &bull; {{ $complaint->category->name ?? 'Umum' }}
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-xs text-gray-500">
+                                {{ \Carbon\Carbon::parse($complaint->created_at)->translatedFormat('d M Y') }}
+                            </td>
+                            <td class="py-4 px-6">
+                                @if($st === 'selesai')
+                                    <x-badge variant="success">Selesai</x-badge>
+                                @elseif($st === 'proses')
+                                    <x-badge variant="warning">Proses</x-badge>
+                                @else
+                                    <x-badge variant="neutral">Pending</x-badge>
+                                @endif
+                            </td>
+                            <td class="py-4 px-6 text-right space-x-2 text-xs font-medium">
+                                <a href="{{ route('admin.complaints.show', $complaint->id) }}" class="text-[#112F28] hover:underline font-semibold">
+                                    Detail
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="5" class="py-8 px-6 text-center text-gray-400 text-sm">Belum ada pengaduan masyarakat masuk.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="mt-4">{{ $complaints->links() }}</div>
+
+    @if(isset($complaints) && method_exists($complaints, 'links'))
+        <x-pagination :paginator="$complaints" />
+    @endif
+</div>
 @endsection

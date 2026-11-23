@@ -1,160 +1,159 @@
 @extends('layouts.site')
-@section('title', \App\Models\SiteSetting::get('site_name', 'Disnaker NTT').' — '.\App\Models\SiteSetting::get('site_tagline', 'Portal Informasi Publik'))
 
 @section('content')
-    {{-- HERO SECTION DENGAN SLIDER --}}
-    <section class="relative bg-slate-800 text-white overflow-hidden">
-        
-        {{-- LOGIKA GAMBAR SLIDER --}}
-        @php
-            $heroImages = [];
-            for ($i = 1; $i <= 5; $i++) {
-                $img = \App\Models\SiteSetting::get("hero_image_$i");
-                if ($img) $heroImages[] = asset('storage/' . $img);
-            }
-        @endphp
-
-        @if(count($heroImages) > 0)
-            {{-- Render Gambar Background --}}
-            <div class="absolute inset-0 z-0">
-                @foreach($heroImages as $index => $img)
-                    <div class="hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-1000 {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}" style="background-image: url('{{ $img }}');"></div>
-                @endforeach
-                {{-- Lapisan Gelap (Overlay) agar teks tetap terbaca --}}
-                <div class="absolute inset-0 bg-slate-900 bg-opacity-75"></div>
-            </div>
-        @else
-            {{-- Fallback jika belum ada gambar --}}
-            <div class="absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-700 z-0"></div>
-        @endif
-
-        {{-- KONTEN TEKS --}}
-        <div class="relative z-10 max-w-6xl mx-auto px-4 py-20 text-center">
-            <h1 class="text-3xl md:text-5xl font-bold mb-4 drop-shadow-lg">{{ \App\Models\SiteSetting::get('site_name', 'Disnaker NTT') }}</h1>
-            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto mb-8 drop-shadow-md">{{ \App\Models\SiteSetting::get('site_tagline', 'Portal Informasi Publik') }}</p>
-            <div class="flex gap-3 justify-center flex-wrap">
-                <a href="{{ route('site.jobs.index') }}" class="bg-white text-slate-800 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 transition shadow">Cari Lowongan</a>
-                <a href="{{ route('site.programs.index') }}" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-slate-700 transition shadow">Lihat Program</a>
+<!-- Hero Section (Split Layout) -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#112F28] rounded-3xl p-8 md:p-12 text-white shadow-xl">
+        <!-- Kolom Teks Kiri -->
+        <div class="lg:col-span-7 space-y-6">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#D1E7DD] text-[#112F28]">
+                Portal Resmi Pemerintah Provinsi NTT
+            </span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+                Langkah baru, masa depan lebih baik.
+            </h1>
+            <p class="text-base sm:text-lg text-gray-200 max-w-xl leading-relaxed">
+                Temukan peluang kerja, kembangkan keterampilan melalui pelatihan vokasi, dan akses layanan publik dalam satu tempat.
+            </p>
+            <div class="flex flex-wrap gap-4 pt-2">
+                <a href="{{ route('site.jobs.index') }}" class="px-6 py-3 bg-[#D1E7DD] hover:bg-[#A3CFBB] text-[#112F28] font-semibold rounded-xl transition shadow">
+                    Temukan peluang &rarr;
+                </a>
+                <a href="{{ route('site.programs.index') }}" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition border border-white/20">
+                    Kenali program kami
+                </a>
             </div>
         </div>
-    </section>
-
-    {{-- BERITA TERBARU --}}
-    <section class="max-w-6xl mx-auto px-4 py-10">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-bold">Berita Terbaru</h2>
-            <a href="{{ route('site.posts.index') }}" class="text-blue-600 hover:underline text-sm">Lihat semua</a>
+        <!-- Kolom Gambar Kanan -->
+        <div class="lg:col-span-5">
+            <div class="rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10 h-72 md:h-80">
+                @php
+                    $heroImg = \App\Models\SiteSetting::get('hero_image_1');
+                    $imgSrc = $heroImg ? asset('storage/' . $heroImg) : 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80';
+                @endphp
+                <img src="{{ $imgSrc }}" alt="Pelatihan Disnakertrans NTT" class="w-full h-full object-cover">
+            </div>
         </div>
-        @if ($latestBerita->isEmpty())
-            <p class="text-gray-500">Belum ada berita.</p>
-        @else
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                @foreach ($latestBerita as $post)
-                    <a href="{{ route('site.posts.show', $post->slug) }}" class="bg-white rounded-lg shadow hover:shadow-lg overflow-hidden transition">
-                        @if ($post->image)
-                            <img src="{{ asset('storage/' . $post->image) }}" class="w-full h-40 object-cover" alt="">
-                        @endif
-                        <div class="p-4">
-                            <p class="text-xs text-blue-600 mb-1">{{ $post->category->name ?? 'Berita' }} • {{ $post->published_at?->format('d M Y') }}</p>
-                            <h3 class="font-semibold line-clamp-2">{{ $post->title }}</h3>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-        @endif
-    </section>
+    </div>
+</section>
 
-    {{-- PENGUMUMAN --}}
-    <section class="max-w-6xl mx-auto px-4 py-10">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-bold">Pengumuman</h2>
-            <a href="{{ route('site.announcements.index') }}" class="text-blue-600 hover:underline text-sm">Lihat semua</a>
+<!-- Quick Links (Layanan Cepat) -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <a href="{{ route('site.jobs.index') }}" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition group">
+            <p class="text-sm font-medium text-gray-500 mb-1">Peluang Kerja</p>
+            <h3 class="text-xl font-bold text-gray-900 group-hover:text-[#112F28]">Cari pekerjaan</h3>
+        </a>
+        <a href="{{ route('site.programs.index') }}" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition group">
+            <p class="text-sm font-medium text-gray-500 mb-1">Vokasi & Keahlian</p>
+            <h3 class="text-xl font-bold text-gray-900 group-hover:text-[#112F28]">Ikuti pelatihan</h3>
+        </a>
+        <a href="{{ route('site.ppid.profile') }}" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition group">
+            <p class="text-sm font-medium text-gray-500 mb-1">Transparansi Informasi</p>
+            <h3 class="text-xl font-bold text-gray-900 group-hover:text-[#112F28]">Layanan PPID</h3>
+        </a>
+        <a href="{{ route('site.complaints.create') }}" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition group">
+            <p class="text-sm font-medium text-gray-500 mb-1">Suara Masyarakat</p>
+            <h3 class="text-xl font-bold text-gray-900 group-hover:text-[#112F28]">Sampaikan aduan</h3>
+        </a>
+    </div>
+</section>
+
+<!-- Berita & Kabar Terbaru -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900">Cerita dan kabar terbaru</h2>
+            <p class="text-sm text-gray-600 mt-1">Ikuti kegiatan, pengumuman, dan langkah bersama membangun masyarakat berdaya.</p>
         </div>
-        @if ($latestPengumuman->isEmpty())
-            <p class="text-gray-500">Belum ada pengumuman.</p>
-        @else
-            <div class="bg-white rounded-lg shadow divide-y">
-                @foreach ($latestPengumuman as $post)
-                    <a href="{{ route('site.posts.show', $post->slug) }}" class="block px-4 py-3 hover:bg-gray-50">
-                        <p class="font-medium">{{ $post->title }}</p>
-                        <p class="text-xs text-gray-500 mt-1">{{ $post->published_at?->format('d M Y') }}</p>
-                    </a>
-                @endforeach
-            </div>
-        @endif
-    </section>
+        <a href="{{ route('site.posts.index') }}" class="hidden sm:inline-flex items-center font-semibold text-[#112F28] hover:underline text-sm">
+            Lihat semua berita &rarr;
+        </a>
+    </div>
 
-    {{-- LOWONGAN --}}
-    <section class="bg-gray-100 py-10">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-2xl font-bold">Lowongan Kerja</h2>
-                <a href="{{ route('site.jobs.index') }}" class="text-blue-600 hover:underline text-sm">Lihat semua</a>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @forelse($latestBerita ?? [] as $post)
+            <x-site.card-news :post="$post" />
+        @empty
+            <p class="text-gray-500 col-span-3 text-center py-10">Belum ada berita terbaru.</p>
+        @endforelse
+    </div>
+</section>
+
+<!-- Lowongan Kerja (Tambahan dari kita agar sesuai PDF) -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-[#E3EAE5] rounded-3xl p-8 md:p-12">
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">Peluang baik menanti Anda.</h2>
+                <p class="text-sm text-gray-600 mt-1">Temukan pekerjaan yang sesuai dengan potensi Anda.</p>
             </div>
-            @if ($featuredJobs->isEmpty())
-                <p class="text-gray-500">Belum ada lowongan aktif.</p>
-            @else
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    @foreach ($featuredJobs as $job)
-                        <a href="{{ route('site.jobs.show', $job->slug) }}" class="bg-white rounded-lg shadow hover:shadow-lg p-4 transition">
-                            <p class="text-xs text-slate-500">{{ $job->company_name }}</p>
-                            <h3 class="font-semibold mt-1 mb-2">{{ $job->title }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">📍 {{ $job->location }}</p>
-                            <p class="text-xs text-slate-500">Deadline: {{ $job->deadline->format('d M Y') }}</p>
-                        </a>
-                    @endforeach
+            <a href="{{ route('site.jobs.index') }}" class="hidden sm:inline-flex items-center font-semibold text-[#112F28] hover:underline text-sm">
+                Lihat semua lowongan &rarr;
+            </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            @forelse ($featuredJobs ?? [] as $job)
+                <a href="{{ route('site.jobs.show', $job->slug) }}" class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition group flex flex-col h-full">
+                    <h3 class="font-bold text-xl text-gray-900 mb-1 group-hover:text-[#112F28]">{{ $job->title }}</h3>
+                    <p class="text-sm font-medium text-gray-600 mb-2">{{ $job->company_name }}</p>
+                    <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-red-600">Batas {{ $job->deadline->format('d M Y') }}</span>
+                    </div>
+                </a>
+            @empty
+                <p class="text-gray-500 col-span-3 text-center">Belum ada lowongan.</p>
+            @endforelse
+        </div>
+    </div>
+</section>
+
+<!-- Program & Pelatihan -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900">Upgrade kemampuan Anda</h2>
+            <p class="text-sm text-gray-600 mt-1">Pilih pelatihan yang tepat untuk masa depan Anda.</p>
+        </div>
+        <a href="{{ route('site.programs.index') }}" class="hidden sm:inline-flex items-center font-semibold text-[#112F28] hover:underline text-sm">
+            Semua program &rarr;
+        </a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @forelse ($featuredPrograms ?? [] as $program)
+            <a href="{{ route('site.programs.show', $program->slug) }}" class="flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition group">
+                <div class="w-full md:w-2/5 h-48 md:h-auto bg-gray-200 relative">
+                    @if($program->image)
+                        <img src="{{ asset('storage/' . $program->image) }}" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
+                    @else
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
+                    @endif
                 </div>
-            @endif
-        </div>
-    </section>
+                <div class="p-6 w-full md:w-3/5 flex flex-col justify-center">
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight mb-2 group-hover:text-[#112F28]">{{ $program->title }}</h3>
+                    <p class="text-sm text-gray-500 mb-4">{{ $program->quota ?? '30' }} peserta • Gratis • Kupang</p>
+                    <span class="text-sm font-bold text-[#112F28]">Lihat program &rarr;</span>
+                </div>
+            </a>
+        @empty
+            <p class="text-gray-500 col-span-2 text-center">Belum ada program.</p>
+        @endforelse
+    </div>
+</section>
 
-    {{-- PROGRAM --}}
-    <section class="max-w-6xl mx-auto px-4 py-10">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-bold">Program & Pelatihan</h2>
-            <a href="{{ route('site.programs.index') }}" class="text-blue-600 hover:underline text-sm">Lihat semua</a>
-        </div>
-        @if ($featuredPrograms->isEmpty())
-            <p class="text-gray-500">Belum ada program.</p>
-        @else
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                @foreach ($featuredPrograms as $program)
-                    <a href="{{ route('site.programs.show', $program->slug) }}" class="bg-white rounded-lg shadow hover:shadow-lg p-4 transition">
-                        <p class="text-xs uppercase text-orange-600 font-semibold">{{ $program->type }}</p>
-                        <h3 class="font-semibold mt-1 mb-2">{{ $program->title }}</h3>
-                        @if ($program->start_date)
-                            <p class="text-sm text-gray-600">📅 {{ $program->start_date->format('d M Y') }} – {{ $program->end_date?->format('d M Y') ?? '-' }}</p>
-                        @endif
-                    </a>
-                @endforeach
+<!-- CTA Section -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mb-12">
+    <div class="bg-[#FAFAF6] border border-gray-200 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+        <h2 class="text-3xl font-bold text-[#112F28] md:w-1/3 leading-tight">Hadir untuk NTT yang lebih berdaya.</h2>
+        <div class="md:w-2/3">
+            <p class="text-gray-600 mb-6 text-base leading-relaxed">
+                DISNAKERTRANS NTT mendampingi masyarakat dalam ketenagakerjaan, pengembangan kompetensi, dan transmigrasi. Semua informasi dan layanan dapat diakses tanpa akun.
+            </p>
+            <div class="flex flex-wrap gap-3">
+                <a href="{{ route('site.profile') }}" class="px-6 py-3 bg-[#112F28] text-white font-semibold rounded-xl hover:bg-[#1B4A40] transition">Kenali Dinas</a>
+                <a href="{{ route('site.announcements.index') }}" class="px-6 py-3 bg-white border border-gray-200 text-[#112F28] font-semibold rounded-xl hover:bg-gray-50 transition">Pengumuman</a>
             </div>
-        @endif
-    </section>
+        </div>
+    </div>
+</section>
 @endsection
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const slides = document.querySelectorAll('.hero-slide');
-        
-        // Hanya jalankan slider jika gambar lebih dari 1
-        if (slides.length > 1) {
-            let currentSlide = 0;
-            const slideInterval = 5000; // 5000 ms = 5 detik
-
-            setInterval(() => {
-                // Sembunyikan gambar saat ini
-                slides[currentSlide].classList.remove('opacity-100');
-                slides[currentSlide].classList.add('opacity-0');
-
-                // Pindah ke gambar berikutnya (kembali ke 0 jika sudah di ujung)
-                currentSlide = (currentSlide + 1) % slides.length;
-
-                // Tampilkan gambar baru
-                slides[currentSlide].classList.remove('opacity-0');
-                slides[currentSlide].classList.add('opacity-100');
-            }, slideInterval);
-        }
-    });
-</script>
-@endpush

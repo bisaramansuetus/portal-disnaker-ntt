@@ -1,60 +1,66 @@
 @extends('layouts.site')
-@section('title', $type === 'permohonan' ? 'Formulir Permohonan Informasi' : 'Formulir Keberatan Informasi')
 
 @section('content')
-    <div class="max-w-3xl mx-auto px-4 py-12">
-        <div class="bg-white rounded-xl shadow-sm border-t-4 border-ntt-gold p-8 md:p-12">
-            <h1 class="text-2xl font-bold text-ntt-red font-serif mb-2">
-                {{ $type === 'permohonan' ? 'Formulir Permohonan Informasi Publik' : 'Formulir Pengajuan Keberatan Informasi' }}
-            </h1>
-            <p class="text-gray-600 mb-8 border-b pb-4 text-sm">Sesuai UU No. 14 Tahun 2008 tentang Keterbukaan Informasi Publik.</p>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <nav class="text-sm text-gray-500 mb-6">
+        <a href="{{ route('home') }}" class="hover:underline">Beranda</a> / <a href="{{ route('site.ppid.profile') }}" class="hover:underline">PPID</a> / <span class="text-gray-900 font-medium">Permohonan Informasi</span>
+    </nav>
 
-            @if ($errors->any())
-                <div class="bg-red-100 text-red-800 p-3 rounded mb-4 text-sm">
-                    <ul class="list-disc pl-5">
-                        @foreach ($errors->all() as $error) <li>{{ $error }}</li> @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="{{ $type === 'permohonan' ? route('site.ppid.store') : route('site.ppid.store_keberatan') }}" class="space-y-4">
-                @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
-                        <input type="text" name="name" value="{{ old('name') }}" required class="w-full border rounded px-3 py-2">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">NIK / No. KTP <span class="text-red-500">*</span></label>
-                        <input type="text" name="nik" value="{{ old('nik') }}" maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required class="w-full border rounded px-3 py-2">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Email <span class="text-red-500">*</span></label>
-                        <input type="email" name="email" value="{{ old('email') }}" required class="w-full border rounded px-3 py-2">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">No. HP / WhatsApp <span class="text-red-500">*</span></label>
-                        <input type="text" name="phone" value="{{ old('phone') }}" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required class="w-full border rounded px-3 py-2">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium mb-1">Alamat Lengkap <span class="text-red-500">*</span></label>
-                        <textarea name="address" rows="2" required class="w-full border rounded px-3 py-2">{{ old('address') }}</textarea>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium mb-1">{{ $type === 'permohonan' ? 'Rincian Informasi yang Dibutuhkan' : 'Alasan Pengajuan Keberatan' }} <span class="text-red-500">*</span></label>
-                        <textarea name="info_needed" rows="4" required class="w-full border rounded px-3 py-2">{{ old('info_needed') }}</textarea>
-                    </div>
-                    @if($type === 'permohonan')
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium mb-1">Tujuan Penggunaan Informasi <span class="text-red-500">*</span></label>
-                        <textarea name="purpose" rows="2" required class="w-full border rounded px-3 py-2">{{ old('purpose') }}</textarea>
-                    </div>
-                    @endif
-                </div>
-                <div class="pt-4 border-t mt-6">
-                    <button type="submit" class="bg-slate-800 text-white font-bold px-6 py-2.5 rounded hover:bg-slate-900 transition shadow">Kirim Formulir</button>
-                </div>
-            </form>
+    <div class="bg-white rounded-3xl p-8 md:p-10 border border-gray-100 shadow-sm space-y-8">
+        <div>
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Permohonan informasi</h1>
+            <p class="text-gray-600 text-sm">Ajukan kebutuhan informasi publik secara mudah, transparan, dan tanpa dipungut biaya.</p>
         </div>
+
+        <form action="{{ route('site.ppid.store') }}" method="POST" class="space-y-6">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama lengkap *</label>
+                    <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#112F28] focus:outline-none text-sm" placeholder="Nama lengkap pemohon">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                    <input type="email" name="email" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#112F28] focus:outline-none text-sm" placeholder="nama@example.com">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">NIK / Identitas Pemohon *</label>
+                    <input type="text" name="nik" required maxlength="16" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#112F28] focus:outline-none text-sm" placeholder="Nomor KTP / Identitas resmi">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon / WhatsApp *</label>
+                    <input type="text" name="phone" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#112F28] focus:outline-none text-sm" placeholder="081234567890">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Alamat lengkap *</label>
+                <textarea name="address" rows="2" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#112F28] focus:outline-none text-sm" placeholder="Alamat domisili pemohon"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Informasi yang dimohon *</label>
+                <textarea name="info_needed" rows="3" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#112F28] focus:outline-none text-sm" placeholder="Contoh: Laporan realisasi program pelatihan tahun 2025..."></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Tujuan penggunaan informasi *</label>
+                <textarea name="purpose" rows="2" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#112F28] focus:outline-none text-sm" placeholder="Jelaskan tujuan penggunaan informasi secara jelas..."></textarea>
+            </div>
+
+            <div class="flex items-center space-x-3 pt-2">
+                <input type="checkbox" id="consent" required class="w-4 h-4 text-[#112F28] border-gray-300 rounded focus:ring-[#112F28]">
+                <label for="consent" class="text-sm text-gray-600">Saya menyatakan data yang disampaikan benar dan menyetujui penggunaan data untuk layanan permohonan informasi.</label>
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                <p class="text-xs text-gray-500">Nomor tiket permohonan diberikan setelah pengiriman berhasil.</p>
+                <x-button variant="primary">Ajukan permohonan &rarr;</x-button>
+            </div>
+        </form>
     </div>
+</div>
 @endsection

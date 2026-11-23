@@ -13,7 +13,7 @@ class SettingController extends Controller
         return view('admin.settings.edit', compact('settings'));
     }
 
-    public function update(Request $request)
+        public function update(Request $request)
     {
         $validated = $request->validate([
             'site_name'        => 'required|string|max:100',
@@ -24,9 +24,9 @@ class SettingController extends Controller
             'office_map_embed' => 'nullable|string',
             'facebook_url'     => 'nullable|url|max:255',
             'instagram_url'    => 'nullable|url|max:255',
+            'tiktok_url'       => 'nullable|url|max:255',
+            'whatsapp_url'     => 'nullable|url|max:255',
             'youtube_url'      => 'nullable|url|max:255',
-            'tiktok_url'       => 'nullable|url|max:255', // Tambahan
-            'whatsapp_url'     => 'nullable|url|max:255', // Tambahan
             'logo'             => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'hero_image_1'     => 'nullable|image|max:3072',
             'hero_image_2'     => 'nullable|image|max:3072',
@@ -35,17 +35,16 @@ class SettingController extends Controller
             'hero_image_5'     => 'nullable|image|max:3072',
         ]);
 
-        // 1. Proses upload logo
+        // Proses upload logo
         if ($request->hasFile('logo')) {
             $logoPath = $request->file('logo')->store('settings', 'public');
             SiteSetting::set('logo_path', $logoPath);
         }
 
-        // 2. Proses upload 5 Gambar Slider (Hero)
+        // Proses upload 5 Gambar Slider
         for ($i = 1; $i <= 5; $i++) {
             $key = "hero_image_$i";
             
-            // Hapus gambar jika dicentang
             if ($request->has("hapus_$key")) {
                 $oldPath = SiteSetting::get($key);
                 if ($oldPath) {
@@ -54,23 +53,19 @@ class SettingController extends Controller
                 }
             }
 
-            // Upload gambar baru
             if ($request->hasFile($key)) {
-                // Hapus gambar lama jika ada sebelum ditimpa
                 $oldPath = SiteSetting::get($key);
                 if ($oldPath) {
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
                 }
-                
                 $path = $request->file($key)->store('hero', 'public');
                 SiteSetting::set($key, $path);
             }
         }
 
-        unset($validated['logo']); // Buang agar tidak error saat looping
+        unset($validated['logo']); 
 
         foreach ($validated as $key => $value) {
-            // Abaikan input hero dan hapus dari sini karena sudah diproses di atas
             if (str_starts_with($key, 'hero_image_')) continue;
             SiteSetting::set($key, $value);
         }
