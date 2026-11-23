@@ -66,12 +66,10 @@
                         UPTD Pelatihan Kerja Kupang
                     </p>
 
-                    <div class="flex flex-wrap items-center gap-2 text-xs text-gray-600 mb-5">
-                        <span>{{ $program->quota ?? '30' }} peserta</span>
-                        <span>&bull;</span>
-                        <span>{{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}</span>
-                        <span>&bull;</span>
-                        <span>Kupang</span>
+                    <div class="flex flex-wrap items-center gap-2 text-xs mb-5">
+                        <span class="px-2.5 py-1 rounded-md font-semibold bg-[#DBEAFE] text-[#1D4ED8]">{{ $program->quota ?? '30' }} peserta</span>
+                        <span class="px-2.5 py-1 rounded-md font-semibold bg-[#DCFCE7] text-[#15803D]">{{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}</span>
+                        <span class="px-2.5 py-1 rounded-md font-semibold bg-[#F3F4F6] text-[#374151]">Kupang</span>
                     </div>
                 </div>
 

@@ -42,8 +42,11 @@
                                 <div class="font-semibold text-gray-900">{{ $program->title }}</div>
                                 <div class="text-xs text-gray-500 capitalize">{{ $program->type }}</div>
                             </td>
-                            <td class="py-4 px-6 text-xs text-gray-600">
-                                {{ $program->quota ?? '-' }} peserta &bull; {{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}
+                            <td class="py-4 px-6">
+                                <div class="flex flex-col items-start gap-1">
+                                    <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-[#DBEAFE] text-[#1D4ED8]">{{ $program->quota ?? '-' }} peserta</span>
+                                    <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-[#DCFCE7] text-[#15803D]">{{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}</span>
+                                </div>
                             </td>
                             <td class="py-4 px-6 text-xs text-gray-600">
                                 {{ $program->start_date ? $program->start_date->format('d M Y') : '-' }}

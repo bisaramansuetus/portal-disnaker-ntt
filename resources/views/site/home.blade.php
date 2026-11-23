@@ -129,10 +129,10 @@
                         <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
                     @endif
                 </div>
-                <div class="p-6 w-full md:w-3/5 flex flex-col justify-center">
-                    <h3 class="font-bold text-xl text-gray-900 leading-tight mb-2 group-hover:text-[#112F28]">{{ $program->title }}</h3>
-                    <p class="text-sm text-gray-500 mb-4">{{ $program->quota ?? '30' }} peserta • Gratis • Kupang</p>
-                    <span class="text-sm font-bold text-[#112F28]">Lihat program &rarr;</span>
+                <div class="flex flex-wrap items-center gap-2 text-xs mb-4">
+                    <span class="px-2.5 py-1 rounded-md font-semibold bg-[#DBEAFE] text-[#1D4ED8]">{{ $program->quota ?? '30' }} peserta</span>
+                    <span class="px-2.5 py-1 rounded-md font-semibold bg-[#DCFCE7] text-[#15803D]">{{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}</span>
+                    <span class="px-2.5 py-1 rounded-md font-semibold bg-[#F3F4F6] text-[#374151]">Kupang</span>
                 </div>
             </a>
         @empty

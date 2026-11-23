@@ -59,10 +59,12 @@
 
             <div class="space-y-4 text-sm">
                 <div class="pb-3 border-b border-gray-100">
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-gray-400">Kuota & Biaya</span>
-                    <span class="font-semibold text-gray-900 mt-0.5 block">
-                        {{ $program->quota ?? '30' }} peserta &bull; {{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}
-                    </span>
+                    <span class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">Kuota & Biaya</span>
+                    <div class="flex flex-wrap items-center gap-2 mt-1">
+                        <span class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#DBEAFE] text-[#1D4ED8]">{{ $program->quota ?? '30' }} peserta</span>
+                        <span class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#DCFCE7] text-[#15803D]">{{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}</span>
+                        <span class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#F3F4F6] text-[#374151]">Kupang</span>
+                    </div>
                 </div>
 
                 <div class="pb-3 border-b border-gray-100">
