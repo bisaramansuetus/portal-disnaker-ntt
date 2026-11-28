@@ -109,37 +109,50 @@
 </section>
 
 <!-- Program & Pelatihan -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex items-center justify-between mb-8">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900">Upgrade kemampuan Anda</h2>
-            <p class="text-sm text-gray-600 mt-1">Pilih pelatihan yang tepat untuk masa depan Anda.</p>
-        </div>
-        <a href="{{ route('site.programs.index') }}" class="hidden sm:inline-flex items-center font-semibold text-[#112F28] hover:underline text-sm">
-            Semua program &rarr;
-        </a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @forelse ($featuredPrograms ?? [] as $program)
-            <a href="{{ route('site.programs.show', $program->slug) }}" class="flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition group">
-                <div class="w-full md:w-2/5 h-48 md:h-auto bg-gray-200 relative">
-                    @if($program->image)
-                        <img src="{{ asset('storage/' . $program->image) }}" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
-                    @else
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
-                    @endif
+        {{-- 5. BELAJAR & BERTUMBUH (Program) --}}
+        <section class="mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <p class="text-xs font-bold text-[#112F28] uppercase tracking-widest mb-2">Belajar dan bertumbuh</p>
+                    <h2 class="text-3xl font-bold text-gray-900">Upgrade kemampuan Anda</h2>
                 </div>
-                <div class="flex flex-wrap items-center gap-2 text-xs mb-4">
-                    <span class="px-2.5 py-1 rounded-md font-semibold bg-[#DBEAFE] text-[#1D4ED8]">{{ $program->quota ?? '30' }} peserta</span>
-                    <span class="px-2.5 py-1 rounded-md font-semibold bg-[#DCFCE7] text-[#15803D]">{{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}</span>
-                    <span class="px-2.5 py-1 rounded-md font-semibold bg-[#F3F4F6] text-[#374151]">Kupang</span>
-                </div>
-            </a>
-        @empty
-            <p class="text-gray-500 col-span-2 text-center">Belum ada program.</p>
-        @endforelse
-    </div>
-</section>
+                <a href="{{ route('site.programs.index') }}" class="text-sm font-bold text-[#112F28] flex items-center gap-1 hover:underline">
+                    Semua program <x-icon name="arrow-right" class="w-4 h-4" />
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @forelse ($featuredPrograms as $program)
+                    <a href="{{ route('site.programs.show', $program->slug) }}" class="flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition group h-full">
+                        {{-- Bagian Gambar --}}
+                        <div class="w-full md:w-2/5 h-48 md:h-auto bg-gray-200 relative">
+                            @if($program->image)
+                                <img src="{{ asset('storage/' . $program->image) }}" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
+                            @endif
+                        </div>
+                        
+                        {{-- Bagian Teks & Badge --}}
+                        <div class="p-6 w-full md:w-3/5 flex flex-col justify-center">
+                            <h3 class="font-bold text-xl text-gray-900 leading-tight mb-2 group-hover:text-[#112F28] transition">{{ $program->title }}</h3>
+                            <p class="text-sm text-gray-500 mb-4 line-clamp-2">{{ Str::limit(strip_tags($program->description), 80) }}</p>
+                            
+                            {{-- Badge Warna-warni --}}
+                            <div class="flex flex-wrap items-center gap-2 text-xs mb-4">
+                                <span class="px-2.5 py-1 rounded-md font-semibold bg-[#DBEAFE] text-[#1D4ED8]">{{ $program->quota ?? '30' }} peserta</span>
+                                <span class="px-2.5 py-1 rounded-md font-semibold bg-[#DCFCE7] text-[#15803D]">{{ $program->fee == 0 ? 'Gratis' : 'Rp '.number_format($program->fee, 0, ',', '.') }}</span>
+                                <span class="px-2.5 py-1 rounded-md font-semibold bg-[#F3F4F6] text-[#374151]">Kupang</span>
+                            </div>
+
+                            <span class="text-sm font-bold text-[#112F28] flex items-center gap-1">Lihat program <x-icon name="arrow-right" class="w-4 h-4" /></span>
+                        </div>
+                    </a>
+                @empty
+                    <p class="text-gray-500 col-span-2 text-center py-10">Belum ada program.</p>
+                @endforelse
+            </div>
+        </section>
 
 <!-- CTA Section -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mb-12">
