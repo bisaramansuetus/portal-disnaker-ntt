@@ -35,13 +35,16 @@ class SettingController extends Controller
             'hero_image_5'     => 'nullable|image|max:3072',
         ]);
 
-        // Proses upload logo
-        // Ganti kode upload logo menjadi seperti ini:
+        // Proses upload logo (Paksa simpan ke folder htdocs/uploads/settings)
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/settings'), $filename);
-            \App\Models\SiteSetting::set('logo_path', 'uploads/settings/' . $filename);
+            
+            // Simpan langsung ke folder uploads/settings di luar sistem storage Laravel
+            $file->move(base_path('uploads/settings'), $filename);
+            
+            // Simpan nama filenya ke database
+            \App\Models\SiteSetting::set('logo_path', 'settings/' . $filename);
         }
         // Proses upload 5 Gambar Slider
         for ($i = 1; $i <= 5; $i++) {
