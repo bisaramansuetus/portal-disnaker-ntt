@@ -76,7 +76,7 @@
                 <label class="block text-sm font-medium mb-2">Gambar Program (Opsional)</label>
                 @if ($program->exists && $program->image)
                     <div class="mb-3">
-                        <img src="{{ asset('storage/' . $program->image) }}" class="h-32 object-cover rounded-lg border shadow-sm">
+                        <img src="{{ asset('uploads/' . $program->image) }}" class="h-32 object-cover rounded-lg border shadow-sm">
                     </div>
                 @endif
                 <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#D1E7DD] file:text-[#112F28] hover:file:bg-[#A3CFBB]">

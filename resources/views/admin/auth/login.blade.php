@@ -15,7 +15,7 @@
     {{-- BACKGROUND LOGO WATERMARK --}}
     @if ($logo)
         <div class="absolute inset-0 z-0 opacity-[0.05] pointer-events-none bg-center bg-no-repeat bg-contain" 
-             style="background-image: url('{{ asset('storage/' . $logo) }}');">
+             style="background-image: url('{{ asset('uploads/' . $logo) }}');">
         </div>
     @endif
 
@@ -26,7 +26,7 @@
         <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
             <div class="w-16 h-16 bg-white border rounded-lg flex items-center justify-center p-1 shrink-0 shadow-sm">
                 @if ($logo)
-                    <img src="{{ asset('storage/' . $logo) }}" alt="Logo" class="w-full h-full object-contain">
+                    <img src="{{ asset('uploads/' . $logo) }}" alt="Logo" class="w-full h-full object-contain">
                 @else
                     <span class="text-[10px] text-gray-400 text-center">Logo<br>Dinas</span>
                 @endif

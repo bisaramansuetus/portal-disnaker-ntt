@@ -29,7 +29,7 @@
             <div class="rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10 h-72 md:h-80">
                 @php
                     $heroImg = \App\Models\SiteSetting::get('hero_image_1');
-                    $imgSrc = $heroImg ? asset('storage/' . $heroImg) : 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80';
+                    $imgSrc = $heroImg ? asset('uploads/' . $heroImg) : 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80';
                 @endphp
                 <img src="{{ $imgSrc }}" alt="Pelatihan Disnakertrans NTT" class="w-full h-full object-cover">
             </div>
@@ -127,7 +127,7 @@
                         {{-- Bagian Gambar --}}
                         <div class="w-full md:w-2/5 h-48 md:h-auto bg-gray-200 relative">
                             @if($program->image)
-                                <img src="{{ asset('storage/' . $program->image) }}" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
+                                <img src="{{ asset('uploads/' . $program->image) }}" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
                             @else
                                 <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover" alt="{{ $program->title }}">
                             @endif

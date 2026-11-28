@@ -5,7 +5,7 @@
     <!-- Hero Image Banner -->
     @if(!empty($post->image))
         <div class="w-full h-64 sm:h-80 md:h-[420px] rounded-3xl overflow-hidden shadow-sm mb-8 bg-gray-200">
-            <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+            <img src="{{ asset('uploads/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
         </div>
     @endif
 

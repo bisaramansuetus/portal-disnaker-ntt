@@ -4,7 +4,7 @@
         <a href="{{ route('home') }}" class="flex items-center gap-3">
             @php $logo = \App\Models\SiteSetting::get('logo_path'); @endphp
             @if ($logo)
-                <img src="{{ asset('storage/' . $logo) }}" alt="Logo" class="h-10 w-auto">
+                <img src="{{ asset('uploads/' . $logo) }}" alt="Logo" class="h-10 w-auto">
             @else
                 <div class="h-10 w-10 bg-[#112F28] rounded flex items-center justify-center text-white font-bold text-xs">NTT</div>
             @endif

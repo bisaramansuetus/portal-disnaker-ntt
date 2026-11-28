@@ -4,7 +4,7 @@
             <div class="flex items-center gap-3 mb-4">
                 @php $logo = \App\Models\SiteSetting::get('logo_path'); @endphp
                 @if ($logo)
-                    <img src="{{ asset('storage/' . $logo) }}" alt="Logo" class="h-10 w-auto bg-white rounded p-1">
+                    <img src="{{ asset('uploads/' . $logo) }}" alt="Logo" class="h-10 w-auto bg-white rounded p-1">
                 @endif
                 <h3 class="text-lg font-bold">DISNAKERTRANS NTT</h3>
             </div>

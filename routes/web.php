@@ -31,9 +31,7 @@ Route::post('/pengaduan', [SiteComplaintController::class, 'store'])->name('site
 Route::get('/pengaduan/lacak', [SiteComplaintController::class, 'track'])->name('site.complaints.track');
 Route::post('/pengaduan/lacak', [SiteComplaintController::class, 'trackResult'])->name('site.complaints.trackResult');
 Route::post('/pengaduan/rating/{complaint}', [SiteComplaintController::class, 'submitRating'])->name('site.complaints.submitRating');
-Route::get('/storage/{path}', [\App\Http\Controllers\StorageController::class, 'show'])
-    ->where('path', '.*')
-    ->name('storage.serve');
+
 
 // e-PPID
 Route::get('/ppid/permohonan', [PpidRequestController::class, 'create'])->name('site.ppid.request_permohonan')->defaults('type', 'permohonan');

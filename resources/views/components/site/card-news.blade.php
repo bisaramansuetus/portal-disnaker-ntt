@@ -5,7 +5,7 @@
         <!-- Thumbnail -->
         <div class="h-48 bg-gray-200 overflow-hidden">
             @if($post->image)
-                <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                <img src="{{ asset('uploads/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
             @else
                 <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" alt="Default" class="w-full h-full object-cover">
             @endif

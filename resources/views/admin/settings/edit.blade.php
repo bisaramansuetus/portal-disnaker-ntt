@@ -58,7 +58,7 @@
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 mb-1.5">Logo Dinas</label>
                     @if(!empty($settings['logo_path']))
-                        <img src="{{ asset('storage/' . $settings['logo_path']) }}" class="h-12 object-contain mb-2 bg-white p-1 rounded border">
+                        <img src="{{ asset('uploads/' . $settings['logo_path']) }}" class="h-12 object-contain mb-2 bg-white p-1 rounded border">
                     @endif
                     <input type="file" name="logo" accept="image/*" class="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-[#112F28] file:text-white">
                 </div>
@@ -105,7 +105,7 @@
                     <div class="bg-gray-50 p-3 border rounded-xl">
                         <label class="block text-xs font-semibold text-gray-700 mb-2">Gambar Ke-{{ $i }}</label>
                         @if (!empty($settings[$heroKey]))
-                            <img src="{{ asset('storage/' . $settings[$heroKey]) }}" class="w-full h-24 object-cover rounded mb-2">
+                            <img src="{{ asset('uploads/' . $settings[$heroKey]) }}" class="w-full h-24 object-cover rounded mb-2">
                             <label class="inline-flex items-center text-xs text-red-600 mb-2 cursor-pointer">
                                 <input type="checkbox" name="hapus_{{ $heroKey }}" value="1" class="mr-1"> Hapus gambar ini
                             </label>

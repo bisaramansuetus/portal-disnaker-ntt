@@ -41,8 +41,8 @@
                 @if($complaint->photo_proof)
                     <div class="mb-8">
                         <h4 class="text-sm font-bold text-slate-800 mb-2">Foto Bukti Terlampir:</h4>
-                        <a href="{{ asset('storage/' . $complaint->photo_proof) }}" target="_blank">
-                            <img src="{{ asset('storage/' . $complaint->photo_proof) }}" class="h-48 rounded border object-cover hover:opacity-75 transition">
+                        <a href="{{ asset('uploads/' . $complaint->photo_proof) }}" target="_blank">
+                            <img src="{{ asset('uploads/' . $complaint->photo_proof) }}" class="h-48 rounded border object-cover hover:opacity-75 transition">
                         </a>
                     </div>
                 @endif

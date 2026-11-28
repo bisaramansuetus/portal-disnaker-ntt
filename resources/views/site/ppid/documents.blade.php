@@ -26,7 +26,7 @@
                                             <td class="px-4 py-3 text-center space-x-2 whitespace-nowrap">
                                                 
                                                 {{-- TOMBOL BACA / LIHAT (Buka di Tab Baru) --}}
-                                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" rel="noopener" 
+                                                <a href="{{ asset('uploads/' . $doc->file_path) }}" target="_blank" rel="noopener" 
                                                    class="inline-block border border-blue-600 text-blue-600 px-3 py-1 rounded text-xs hover:bg-blue-50 transition font-semibold">
                                                     👁️ Baca
                                                 </a>

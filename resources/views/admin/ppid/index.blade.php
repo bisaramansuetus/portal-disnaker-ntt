@@ -70,7 +70,7 @@
                                 </td>
                                 <td class="py-4 px-6 text-right space-x-2 text-xs font-medium">
                                     @if(!empty($doc->file_path))
-                                        <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="text-[#112F28] hover:underline">Buka</a>
+                                        <a href="{{ asset('uploads/' . $doc->file_path) }}" target="_blank" class="text-[#112F28] hover:underline">Buka</a>
                                         <span class="text-gray-300">&bull;</span>
                                     @endif
                                     <button type="button" onclick="openDeleteDocModal('{{ route('admin.ppid.destroy', $doc->id) }}', '{{ addslashes($doc->title) }}')" class="text-red-600 hover:underline">Hapus</button>

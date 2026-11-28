@@ -108,7 +108,7 @@
 
                 @if($isEdit && !empty($post->image))
                     <div class="rounded-xl overflow-hidden border border-gray-200 h-36 bg-gray-50">
-                        <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+                        <img src="{{ asset('uploads/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
                     </div>
                 @endif
 

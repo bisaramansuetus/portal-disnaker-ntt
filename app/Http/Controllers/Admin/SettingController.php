@@ -36,11 +36,13 @@ class SettingController extends Controller
         ]);
 
         // Proses upload logo
+        // Ganti kode upload logo menjadi seperti ini:
         if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('settings', 'public');
-            SiteSetting::set('logo_path', $logoPath);
+            $file = $request->file('logo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/settings'), $filename);
+            \App\Models\SiteSetting::set('logo_path', 'uploads/settings/' . $filename);
         }
-
         // Proses upload 5 Gambar Slider
         for ($i = 1; $i <= 5; $i++) {
             $key = "hero_image_$i";

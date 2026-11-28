@@ -35,7 +35,7 @@
             <div class="px-6 py-7 border-b border-white/10 flex items-center gap-3">
                 @php $logo = \App\Models\SiteSetting::get('logo_path'); @endphp
                 @if($logo)
-                    <img src="{{ asset('storage/' . $logo) }}" alt="Logo" class="h-8 w-auto bg-white rounded p-0.5">
+                    <img src="{{ asset('uploads/' . $logo) }}" alt="Logo" class="h-8 w-auto bg-white rounded p-0.5">
                 @endif
                 <div>
                     <span class="text-sm font-bold tracking-tight block">DISNAKERTRANS</span>
